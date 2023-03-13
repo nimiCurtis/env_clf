@@ -1,4 +1,4 @@
 bag/*
 .vscode
 __pycache__/
-env_clf/dataset/*
+dataset/*
