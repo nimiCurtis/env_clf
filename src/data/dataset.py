@@ -44,11 +44,12 @@ def split_to_train_test(bag_batch_folder):
 
 
 def move_to(bag_obj:BagReader,set,label):
+    num_imgs = 0
     
     try:
     
         if os.path.exists(bag_obj.MetaData["depth"]):
-            df = pd.read_csv(bag_obj.MetaData["depth"])
+            df = pd.read_csv(bag_obj.MetaData["depth"],index_col=0)
 
         output_folder = os.path.join(os.path.join(DATASET,set),label)
         if os.path.exists(output_folder):
@@ -92,7 +93,6 @@ def main():
     parser = Parser.get_parser()
     args = Parser.get_args(parser)
     try:
-    
         split_to_train_test(args.bag_batch_folder)
     
     except TypeError as e:
