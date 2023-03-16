@@ -12,7 +12,9 @@ import numpy as np
 import cv2
 import pandas as pd
 
+import torch
 from torch.utils.data import Dataset
+from torchvision.datasets import ImageFolder
 
 PATH = os.path.join(os.path.dirname(__file__),'../../../')
 sys.path.insert(0, PATH)
@@ -76,16 +78,30 @@ def move_to(bag_obj:BagReader,set,label):
             cv2.imwrite(output_filename, cv_img)
 
 
-class EnvDataset(Dataset):
+class EnvDataset(ImageFolder):
     
-    def __init__(self):
-        pass
-    
-    def __len__(self):
-        pass
+    def __init__(self, root, transform=None, target_transform=None):
+        super().__init__(root, transform=transform, target_transform=target_transform)
+        self.num_classes = len(self.classes)
+        
+    def one_hot_transform(self, target):
+        one_hot_target = torch.zeros(self.num_classes)
+        one_hot_target[target] = 1
+        return one_hot_target
+        
+    def __getitem__(self, index):
+        path, target = self.samples[index]
+        image = self.loader(path)
+        
+        if self.transform is not None:
+            image = self.transform(image)
+        
+        if self.target_transform is not None:
+            target = self.target_transform(target)
+        else:
+            target = torch.tensor(target)
 
-    def __getitem__(self,idx):
-        pass
+        return image, target
 
 
 def main():
