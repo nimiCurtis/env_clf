@@ -83,9 +83,9 @@ class EnvDataset(ImageFolder):
     def __init__(self, root, transform=None, target_transform=None):
         super().__init__(root, transform=transform, target_transform=target_transform)
         self.num_classes = len(self.classes)
-        
-    def one_hot_transform(self, target):
-        one_hot_target = torch.zeros(self.num_classes)
+    
+    def one_hot_transform(target,num_classes):
+        one_hot_target = torch.zeros(num_classes)
         one_hot_target[target] = 1
         return one_hot_target
         
@@ -97,7 +97,7 @@ class EnvDataset(ImageFolder):
             image = self.transform(image)
         
         if self.target_transform is not None:
-            target = self.target_transform(target)
+            target = self.target_transform(target,self.num_classes)
         else:
             target = torch.tensor(target)
 
