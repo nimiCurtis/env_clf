@@ -23,7 +23,7 @@ from bag_utils.modules.bag_reader.bag_reader import BagReader
 from bag_utils.modules.utils.image_data_handler import DepthHandler
 dp = DepthHandler()
 
-from env_clf.src.utils.env_label import EnvLabel
+from env_clf.src.model.utils.env_label import EnvLabel
 
 
 DATASET = os.path.join(os.path.dirname(__file__),'../../dataset/real')
@@ -84,17 +84,13 @@ class EnvDataset(ImageFolder):
         super().__init__(root, transform=transform, target_transform=target_transform)
         self.num_classes = len(self.classes)
     
-    def one_hot_transform(target,num_classes):
-        one_hot_target = torch.zeros(num_classes)
-        one_hot_target[target] = 1
-        return one_hot_target
-        
     def __getitem__(self, index):
         path, target = self.samples[index]
         image = self.loader(path)
         
         if self.transform is not None:
-            image = self.transform(image)
+            image = self.transform(image=np.array(image))["image"]
+            image = image.float()
         
         if self.target_transform is not None:
             target = self.target_transform(target,self.num_classes)
