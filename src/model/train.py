@@ -7,12 +7,18 @@ from torch.utils.data import DataLoader
 # import from parallel modules
 PATH = os.path.join(os.path.dirname(__file__),'../')
 sys.path.insert(0, PATH)
+
+
 from data.dataset import EnvDataset
 from model.pre_process import Transformer
 from model.utils.visualize import visualize_augmentations
 from model.utils.metrices import MetricMonitor
 from model.eval import calculate_accuracy, evaluate
 from model import models
+
+import hydra
+from omegaconf import DictConfig, OmegaConf
+OmegaConf.register_resolver("path", lambda : PATH)
 
 def train(train_loader, model:nn.Module, criterion, optimizer:Optimizer, epoch, params):
     # Create a MetricMonitor object to keep track of the loss and accuracy
@@ -24,8 +30,8 @@ def train(train_loader, model:nn.Module, criterion, optimizer:Optimizer, epoch, 
     # Loop over each batch of data in the training dataset
     for i, (images, target) in enumerate(stream, start=1):
         # Move the input data and target labels to the GPU (if available)
-        images = images.to(params["device"], non_blocking=True)
-        target = target.to(params["device"], non_blocking=True)
+        images = images.to(params.device, non_blocking=True)
+        target = target.to(params.device, non_blocking=True)
         # Forward pass through the model to get the output predictions
         output = model(images)
         # Calculate the loss between the model's output and the target labels
@@ -45,34 +51,31 @@ def train(train_loader, model:nn.Module, criterion, optimizer:Optimizer, epoch, 
         stream.set_description(
             "\033[34mEpoch: {epoch}.\033[0m \033[36mTrain.      {metric_monitor}\033[0m".format(epoch=epoch, metric_monitor=metric_monitor)
         )
-
-def main():
+        
+@hydra.main( version_base=None ,config_path="../../config/env_clf_config", config_name = "env_clf")
+def main(cfg:DictConfig):
     
-    # Set the hyperparameters for the experiment
-    params = {
-        "model": "EnDNet",
-        "device": "cpu",
-        "lr": 0.001,
-        "batch_size": 64,
-        "num_workers": 4,
-        "epochs": 10,
-        "seed": 42,
-    }
+    # Set the hyperparameters for the experiment based on the config
+    dataset_conf = cfg.dataset
+    model_conf = cfg.model
+    training_conf = cfg.training
+    optimizer_conf = cfg.optimizer
+    criterion_conf = cfg.criterion
     
     # Set manual seed for reproducibility
-    manual_seed(params["seed"])
+    manual_seed(dataset_conf.seed)
     
     # Load the specified model architecture
-    model = getattr(models, params["model"])()
+    model = getattr(models, model_conf.name)()
     
     # Move the model to the specified device (CPU or GPU)
-    model = model.to(params["device"])
+    model = model.to(training_conf.device)
 
-    # Define the loss function (Binary Cross Entropy with Logits)
-    criterion = nn.BCEWithLogitsLoss().to(params["device"])
+    # Define the loss function based on the criterion name
+    criterion = getattr(nn, criterion_conf.name)().to(training_conf.device)
     
-    # Define the optimizer (Adam)
-    optimizer = optim.Adam(model.parameters(), lr=params["lr"])
+    # Get the optimizer object based on the optimizer name
+    optimizer = getattr(optim, optimizer_conf.name)(model.parameters(), lr=optimizer_conf.learning_rate)
     
     # Define the data transformations using the custom Transformer class
     transformer = Transformer()
@@ -87,13 +90,13 @@ def main():
                                 target_transform=transformer.one_hot_transform)
     
     # Create data loaders to load the datasets in batches
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=dataset_conf.train_batch_size, shuffle=True)
+    test_loader = DataLoader(test_dataset, dataset_conf.test_batch_size, shuffle=False)
     
     # Train and evaluate the model for the specified number of epochs
-    for epoch in range(1, params["epochs"] + 1):
-        train(train_loader, model, criterion, optimizer, epoch, params) # train the model on the training set
-        evaluate(test_loader, model, criterion, epoch, params) # evaluate the model on the testing set
+    for epoch in range(1, training_conf.num_epochs + 1):
+        train(train_loader, model, criterion, optimizer, epoch, training_conf) # train the model on the training set
+        evaluate(test_loader, model, criterion, epoch, training_conf) # evaluate the model on the testing set
 
 if __name__=='__main__':
     main()

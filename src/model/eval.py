@@ -31,8 +31,8 @@ def evaluate(val_loader, model, criterion, epoch, params):
     stream = tqdm(val_loader)
     with torch.no_grad():
         for i, (images, target) in enumerate(stream, start=1):
-            images = images.to(params["device"], non_blocking=True)
-            target = target.to(params["device"], non_blocking=True)
+            images = images.to(params.device, non_blocking=True)
+            target = target.to(params.device, non_blocking=True)
             output = model(images)
             loss = criterion(output, target)
             accuracy = calculate_accuracy(output, target)

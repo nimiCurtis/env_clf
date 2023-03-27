@@ -1,0 +1,30 @@
+hydra:
+  run:
+    dir: ${path:}/../config/saved_configs/env_clf_config/
+
+defaults:
+  - model: EnDNet
+
+# dataset configuration
+dataset:
+  name: TAUDB
+  seed: 42
+  train_batch_size: 64
+  test_batch_size: 32
+  train_dataset_path: ../dataset/real/train
+  test_dataset_path: ../dataset/real/test
+
+# optimizer configuration
+optimizer:
+  name: Adam 
+  learning_rate: 0.01
+
+criterion:
+  name: BCEWithLogitsLoss
+
+
+# training configuration
+training:
+  device: cpu     # cpu | cuda
+  num_epochs: 1
+  save_path: ---------- TODO ----------

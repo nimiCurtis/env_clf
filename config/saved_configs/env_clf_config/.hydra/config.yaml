@@ -1,0 +1,26 @@
+model:
+  name: EnDNet
+  num_classes: 2
+  input_shape:
+  - 1
+  - 28
+  - 28
+  hidden_layers:
+  - 256
+  - 128
+dataset:
+  name: TAUDB
+  seed: 42
+  train_batch_size: 64
+  test_batch_size: 32
+  train_dataset_path: ../dataset/real/train
+  test_dataset_path: ../dataset/real/test
+optimizer:
+  name: Adam
+  learning_rate: 0.01
+criterion:
+  name: BCEWithLogitsLoss
+training:
+  device: cpu
+  num_epochs: 1
+  save_path: '---------- TODO ----------'
