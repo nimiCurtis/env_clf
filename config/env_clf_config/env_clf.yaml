@@ -22,7 +22,6 @@ optimizer:
 criterion:
   name: BCEWithLogitsLoss
 
-
 # training configuration
 training:
   device: cpu     # cpu | cuda
