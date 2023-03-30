@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torchvision import models
 from collections import defaultdict
 
 
@@ -17,4 +18,33 @@ class EnDNet(nn.Module):
         x = x.view(-1, 16*180*320)
         x = self.fc1(x)
         return x
+
+class ResNet(nn.Module):
+    def __init__(self, version='resnet18', pretrained=False, num_classes=2) -> None:
+        super(ResNet, self).__init__()
+        self.version = version
+        self.pretrained = pretrained
+        self.num_classes = num_classes
+        self.resnet = self.get_resnet()
+        self.fc = nn.Linear(self.resnet.fc.out_features, self.num_classes)
+        
+    def forward(self, x):
+        x = self.resnet(x)
+        x = self.fc(x)
+        return x
+    
+    def get_resnet(self):
+        if self.version == 'resnet18':
+            resnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'resnet34':
+            resnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'resnet50':
+            resnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'resnet101':
+            resnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'resnet152':
+            resnet = getattr(models, self.version)(pretrained=self.pretrained)
+        else:
+            raise ValueError('Invalid ResNet version specified')
+        return resnet
 

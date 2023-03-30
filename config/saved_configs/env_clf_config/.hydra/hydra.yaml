@@ -142,7 +142,7 @@ hydra:
       provider: schema
     output_dir: /home/roblab20/catkin_ws/src/Exo_Intent/env_clf/config/saved_configs/env_clf_config
     choices:
-      model: EnDNet
+      model: ResNet
       hydra/env: default
       hydra/callbacks: null
       hydra/job_logging: default

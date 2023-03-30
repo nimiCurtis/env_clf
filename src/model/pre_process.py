@@ -13,6 +13,7 @@ class Transformer():
     def train_transform(self):
         train_transform = A.Compose(
             [   #A.Crop(x_min=,y_min=,x_max=,y_max=),
+                A.Resize(height=224,width=224),
                 A.RandomBrightnessContrast(p=0.3),
                 ToTensorV2(),
             ]
@@ -23,6 +24,7 @@ class Transformer():
     def eval_transform(self):
         val_transform = A.Compose(
             [   #A.Crop(x_min=,y_min=,x_max=,y_max=),
+                A.Resize(height=224,width=224),
                 A.RandomBrightnessContrast(p=0.3),
                 ToTensorV2()
             ]

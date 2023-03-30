@@ -1,13 +1,7 @@
 model:
-  name: EnDNet
+  name: ResNet
   num_classes: 2
-  input_shape:
-  - 1
-  - 28
-  - 28
-  hidden_layers:
-  - 256
-  - 128
+  version: resnet18
 dataset:
   name: TAUDB
   seed: 42
@@ -21,6 +15,6 @@ optimizer:
 criterion:
   name: BCEWithLogitsLoss
 training:
-  device: cpu
-  num_epochs: 1
+  device: cuda
+  num_epochs: 10
   save_path: '---------- TODO ----------'

@@ -96,7 +96,7 @@ def main(cfg:DictConfig):
     # Train and evaluate the model for the specified number of epochs
     for epoch in range(1, training_conf.num_epochs + 1):
         train(train_loader, model, criterion, optimizer, epoch, training_conf) # train the model on the training set
-        evaluate(test_loader, model, criterion, epoch, training_conf) # evaluate the model on the testing set
+        evaluate(test_loader, model, criterion, epoch, training_conf,debug=True) # evaluate the model on the testing set
 
 if __name__=='__main__':
     main()
