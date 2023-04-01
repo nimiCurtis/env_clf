@@ -2,6 +2,7 @@ import os
 import sys
 from tqdm import tqdm
 import torchvision
+import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
@@ -38,7 +39,7 @@ def calculate_accuracy(preds, target):
 
     return accuracy
 
-def evaluate(val_loader, model, criterion, epoch, params, debug=False):
+def evaluate(val_loader, model, criterion, epoch, params):
     metric_monitor = MetricMonitor()
     model.eval()
     stream = tqdm(val_loader)
@@ -50,12 +51,15 @@ def evaluate(val_loader, model, criterion, epoch, params, debug=False):
             loss = criterion(preds, target)
             accuracy = calculate_accuracy(preds, target)
 
-            if debug and i%10==0:
+            if params.debug and i%10==0:
                 show_batch(images=images,labels=target,predictions=preds,step=i,evaluating_loop=True)
-            
-            
+
             metric_monitor.update("Loss", loss.item())
             metric_monitor.update("Accuracy", accuracy)
             stream.set_description(
             "\033[34mEpoch: {epoch}.\033[0m \033[32mTest.      {metric_monitor}\033[0m".format(epoch=epoch, metric_monitor=metric_monitor)
         )
+
+
+    return metric_monitor.metrics['Loss']['avg'], metric_monitor.metrics['Acc']['avg']
+
