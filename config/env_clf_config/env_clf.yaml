@@ -20,12 +20,12 @@ optimizer:
   learning_rate: 0.01
 
 criterion:
-  name: BCEWithLogitsLoss # CrossEntropyLoss | BCEWithLogitsLoss
+  name: CrossEntropyLoss # CrossEntropyLoss | BCEWithLogitsLoss
 
 # training configuration
 training:
-  device: cpu     # cpu | cuda
-  num_epochs: 1
+  device: cuda     # cpu | cuda
+  num_epochs: 5
   debug: false
   save: true
   # save_path: ${model.name}_${model.version:if model.version is not None}_${now:%Y-%m-%d}_${now:%H-%M-%S}

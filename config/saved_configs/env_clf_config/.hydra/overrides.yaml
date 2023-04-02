@@ -1,1 +1,2 @@
-[]
+- model=ResNet
+- training.debug=true

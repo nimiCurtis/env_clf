@@ -1,7 +1,7 @@
 model:
-  name: EnDNet
+  name: ResNet
   num_classes: 2
-  version: endnet0
+  version: resnet18
 dataset:
   name: TAUDB
   seed: 42
@@ -13,10 +13,10 @@ optimizer:
   name: Adam
   learning_rate: 0.01
 criterion:
-  name: BCEWithLogitsLoss
+  name: CrossEntropyLoss
 training:
-  device: cpu
-  num_epochs: 1
-  debug: false
+  device: cuda
+  num_epochs: 5
+  debug: true
   save: true
   save_path: ${model.name}/v_${model.version}_${now:%Y-%m-%d}_${now:%H-%M-%S}

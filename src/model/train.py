@@ -56,7 +56,7 @@ def train(train_loader, model:nn.Module, criterion, optimizer:Optimizer, epoch, 
         
     # Return the average loss and accuracy computed by the MetricMonitor object
     return metric_monitor.metrics['Loss']['avg'], metric_monitor.metrics['Acc']['avg']
-        
+
 @hydra.main( version_base=None ,config_path="../../config/env_clf_config", config_name = "env_clf")
 def main(cfg:DictConfig):
     
