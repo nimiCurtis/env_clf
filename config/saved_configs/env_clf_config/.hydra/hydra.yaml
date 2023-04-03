@@ -111,11 +111,13 @@ hydra:
   overrides:
     hydra:
     - hydra.mode=RUN
-    task: []
+    task:
+    - training.num_epochs=1
+    - wandb.run.enable=false
   job:
     name: train
     chdir: null
-    override_dirname: ''
+    override_dirname: training.num_epochs=1,wandb.run.enable=false
     id: ???
     num: ???
     config_name: env_clf
@@ -142,6 +144,7 @@ hydra:
       provider: schema
     output_dir: /home/roblab20/catkin_ws/src/Exo_Intent/env_clf/config/saved_configs/env_clf_config
     choices:
+      wandb: defaults
       model: ResNet
       hydra/env: default
       hydra/callbacks: null

@@ -32,7 +32,7 @@ class ResNet(nn.Module):
         x = self.resnet(x)
         x = self.fc(x)
         x = F.relu(x)
-        x = F.softmax(x)
+        x = F.softmax(x,dim=1)
         return x
     
     def get_resnet(self):

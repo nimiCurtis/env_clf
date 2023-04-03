@@ -1,0 +1,13 @@
+---
+
+setup:
+    project: env_clf
+    entity: nimrodcurtis
+    name: 
+    mode: online
+
+
+watch:
+    log: all
+    log_freq: 100
+

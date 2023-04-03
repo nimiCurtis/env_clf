@@ -62,6 +62,11 @@ def train(train_loader, model:nn.Module, criterion, optimizer:Optimizer, epoch, 
 @hydra.main( version_base=None ,config_path="../../config/env_clf_config", config_name = "env_clf")
 def main(cfg:DictConfig):
     
+    if cfg.wandb.run.enable:
+        run = wandb.init(entity=cfg.wandb.setup.entity, project=cfg.wandb.setup.project, name=cfg.wandb.run.name)
+    
+
+    
     # Set the hyperparameters for the experiment based on the config
     dataset_conf = cfg.dataset
     model_conf = cfg.model
@@ -121,6 +126,13 @@ def main(cfg:DictConfig):
         epoch_train_loss, epoch_train_acc = train(train_loader, model, criterion, optimizer, epoch, training_conf) # train the model on the training set
         epoch_test_loss, epoch_test_acc = evaluate(test_loader, model, criterion, epoch, training_conf) # evaluate the model on the testing set
         
+        if cfg.wandb.run.enable:
+            wandb.log({"train_loss": epoch_train_loss,
+                    "train_accuray": epoch_train_acc,
+                    "test_loss": epoch_test_loss,
+                    "test_accuracy": epoch_test_acc})
+
+            
         # Add losses to the relevant list
         epoch_train_total_loss.append(epoch_train_loss)
         epoch_test_total_loss.append(epoch_test_loss)

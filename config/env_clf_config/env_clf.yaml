@@ -26,8 +26,13 @@ criterion:
 # training configuration
 training:
   device: cuda     # cpu | cuda
-  num_epochs: 5
+  num_epochs: 4
   debug: false
   save: true
   # save_path: ${model.name}_${model.version:if model.version is not None}_${now:%Y-%m-%d}_${now:%H-%M-%S}
   save_path: ${model.name}/v_${model.version}_${now:%Y-%m-%d}_${now:%H-%M-%S}
+
+wandb: 
+  run: 
+    enable: True
+    name: ${training.save_path}

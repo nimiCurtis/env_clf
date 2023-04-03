@@ -2,6 +2,18 @@ model:
   name: ResNet
   num_classes: 3
   version: resnet18
+wandb:
+  setup:
+    project: env_clf
+    entity: nimrodcurtis
+    name: null
+    mode: online
+  watch:
+    log: all
+    log_freq: 100
+  run:
+    enable: false
+    name: ${training.save_path}
 dataset:
   name: TAUDB
   seed: 42
@@ -16,7 +28,7 @@ criterion:
   name: CrossEntropyLoss
 training:
   device: cuda
-  num_epochs: 5
+  num_epochs: 1
   debug: false
   save: true
   save_path: ${model.name}/v_${model.version}_${now:%Y-%m-%d}_${now:%H-%M-%S}

@@ -61,5 +61,5 @@ def evaluate(val_loader, model, criterion, epoch, params):
         )
 
 
-    return metric_monitor.metrics['Loss']['avg'], metric_monitor.metrics['Acc']['avg']
+    return metric_monitor.metrics['Loss']['avg'], metric_monitor.metrics['Accuracy']['avg']
 
