@@ -66,17 +66,17 @@ def move_to(bag_obj:BagReader,set,label):
 
     for index, row in df.iterrows():
     # Load the .npy matrix using NumPy
-            if index < 200:
-                img_matrix = np.load(row['np_path'])
+        
+            img_matrix = np.load(row['np_path'])
 
-                # Convert the matrix to a grayscale image using OpenCV
-                cv_img = dp.get_depth_normalization(img_matrix)
+            # Convert the matrix to a grayscale image using OpenCV
+            cv_img = dp.get_depth_normalization(img_matrix)
 
-                # Define the output filename
-                output_filename = os.path.join(output_folder, f"{label}_{num_imgs+index}.jpg")
+            # Define the output filename
+            output_filename = os.path.join(output_folder, f"{label}_{num_imgs+index}.jpg")
 
-                # Save the image as a .jpg file using OpenCV
-                cv2.imwrite(output_filename, cv_img)
+            # Save the image as a .jpg file using OpenCV
+            cv2.imwrite(output_filename, cv_img)
 
 
 class EnvDataset(ImageFolder):

@@ -1,4 +1,4 @@
 # model configuration
 name: EnDNet
-num_classes: 2
+num_classes: 3
 version: endnet0

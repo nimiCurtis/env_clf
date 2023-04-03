@@ -3,7 +3,8 @@ hydra:
     dir: ${path:}/../config/saved_configs/env_clf_config/
 
 defaults:
-  - model: EnDNet # EnDNet | ResNet
+  - model: ResNet # EnDNet | ResNet
+  - wandb: defaults
 
 # dataset configuration
 dataset:
@@ -17,7 +18,7 @@ dataset:
 # optimizer configuration
 optimizer:
   name: Adam # Adam | SGD
-  learning_rate: 0.01
+  learning_rate: 0.001
 
 criterion:
   name: CrossEntropyLoss # CrossEntropyLoss | BCEWithLogitsLoss

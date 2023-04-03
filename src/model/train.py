@@ -21,6 +21,8 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 OmegaConf.register_resolver("path", lambda : PATH)
 
+import wandb 
+
 def train(train_loader, model:nn.Module, criterion, optimizer:Optimizer, epoch, params):
 
     # Create a MetricMonitor object to keep track of the loss and accuracy
