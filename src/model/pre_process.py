@@ -14,7 +14,7 @@ class Transformer():
         train_transform = A.Compose(
             [   #A.Crop(x_min=,y_min=,x_max=,y_max=),
                 A.Resize(height=224,width=224),
-                #A.Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5)),
+                A.Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5)),
                 A.RandomBrightnessContrast(p=0.3),
                 ToTensorV2(),
             ]
