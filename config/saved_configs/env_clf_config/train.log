@@ -221,3 +221,31 @@
 [2023-04-03 21:05:21,282][rospy.core][INFO] - signal_shutdown [atexit]
 [2023-04-03 21:08:23,405][rospy.core][INFO] - signal_shutdown [atexit]
 [2023-04-03 21:11:01,287][rospy.core][INFO] - signal_shutdown [atexit]
+[2023-04-05 00:05:41,742][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,759][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,776][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,814][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,823][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,833][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,841][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,877][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,911][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,926][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,941][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,951][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:05:41,983][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,434][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,444][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,457][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,467][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,475][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,491][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,500][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,531][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,544][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,554][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,566][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,577][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,589][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,603][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+[2023-04-05 00:06:15,614][matplotlib.image][WARNING] - Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).

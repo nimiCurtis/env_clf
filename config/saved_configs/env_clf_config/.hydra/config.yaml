@@ -27,8 +27,8 @@ optimizer:
 criterion:
   name: CrossEntropyLoss
 training:
-  device: cuda
-  num_epochs: 1
+  device: cpu
+  num_epochs: 4
   debug: false
   save: true
   save_path: ${model.name}/v_${model.version}_${now:%Y-%m-%d}_${now:%H-%M-%S}

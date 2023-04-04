@@ -62,7 +62,7 @@ def visualize_augmentations(dataset, idx=0, samples=10, cols=5):
     for i in range(samples):
         image, _ = dataset[idx+i]
         image = image.permute(1, 2, 0).numpy()
-        ax.ravel()[i].imshow(image)
+        ax.ravel()[i].imshow((image*255).astype(np.uint8))
         ax.ravel()[i].set_axis_off()
     plt.tight_layout()
     plt.show()

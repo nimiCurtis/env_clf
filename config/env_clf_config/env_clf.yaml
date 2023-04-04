@@ -25,7 +25,7 @@ criterion:
 
 # training configuration
 training:
-  device: cuda     # cpu | cuda
+  device: cpu    # cpu | cuda
   num_epochs: 4
   debug: false
   save: true
@@ -34,5 +34,5 @@ training:
 
 wandb: 
   run: 
-    enable: True
+    enable: false
     name: ${training.save_path}

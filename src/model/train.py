@@ -1,15 +1,18 @@
 import os
 import sys
 from tqdm import tqdm
+import warnings
+
+
+
 import numpy as np
 from torch import nn, optim, manual_seed, save
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
+
 # import from parallel modules
 PATH = os.path.join(os.path.dirname(__file__),'../')
 sys.path.insert(0, PATH)
-
-
 from data.dataset import EnvDataset
 from model.pre_process import Transformer
 from model.utils.visualize import visualize_augmentations
@@ -64,8 +67,6 @@ def main(cfg:DictConfig):
     
     if cfg.wandb.run.enable:
         run = wandb.init(entity=cfg.wandb.setup.entity, project=cfg.wandb.setup.project, name=cfg.wandb.run.name)
-    
-
     
     # Set the hyperparameters for the experiment based on the config
     dataset_conf = cfg.dataset
