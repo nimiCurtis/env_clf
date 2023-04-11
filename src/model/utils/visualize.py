@@ -8,6 +8,20 @@ import copy
 import numpy as np
 
 
+def show_image(image,image_number,pred_label):
+    # convert to numpy image
+    img = image.detach().numpy()
+    # transpose dims
+    img = np.transpose(img, (1, 2, 0))
+    # convert to int
+    img = (img*255).astype(np.uint8)
+
+    fig, ax = plt.subplots()
+    fig.suptitle(f"Predicted class: {pred_label} | Image number: {image_number}", fontsize=10)
+    ax.imshow(img)
+    plt.show()
+
+
 def show_batch(images, labels, predictions,step,cols=8,evaluating_loop=False):
     # Get batch size
     batch_size = len(images)
@@ -24,7 +38,7 @@ def show_batch(images, labels, predictions,step,cols=8,evaluating_loop=False):
     
     # Create grid of images
     images = np.transpose(images, (0, 2, 3, 1))
-        
+    
     # Loop through each image and label, and display actual vs predicted label in title
     for i in range(batch_size):
         image = images[i].astype(np.uint8)

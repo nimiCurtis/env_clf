@@ -15,7 +15,7 @@ PATH = os.path.join(os.path.dirname(__file__),'../')
 sys.path.insert(0, PATH)
 from data.dataset import EnvDataset
 from model.pre_process import Transformer
-from model.utils.visualize import visualize_augmentations
+from model.utils.visualize import show_image
 from model.utils.metrices import MetricMonitor
 from model.eval import calculate_accuracy, evaluate
 from model import models
@@ -38,27 +38,46 @@ class InferenceDataset(EnvDataset):
 
         return image
 
-
-def inference_single():
-    pass
-
-def inference_batch():
-    pass
-
 def main():
     
     parser = argparse.ArgumentParser(description ='Environment context recognition')
-    parser.add_argument('--model', '-m', metavar='MODEL', default='dpn92',
-                    help='model architecture (default: dpn92)')
+    parser.add_argument('--dataset', '-d', default=PATH+'../dataset/real/test',
+                    help='dataset folder (default: test set folder)')
+    
+    parser.add_argument('--model', '-m', default=PATH+'../models/ResNet/v_resnet18_2023-04-03_19-29-35.pth',
+                    help='model architecture (default: resnet18)')
+
+    parser.add_argument('--image','-i',dest='image_number',default=0, type=int, help='Image number')
+    parser.add_argument('--gpu',action='store_true', help='Use GPU if available (default: 0)')
 
 
+    # Parse the arguments
+    args = parser.parse_args()
 
-# model path
-# dataset folder
-# device
-# single idx
-# batch idx
+    # Define the data transformations using the custom Transformer class
+    transformer = Transformer()
 
+    # Load the model
+    device = torch.device('cuda' if args.gpu and torch.cuda.is_available() else 'cpu')
+    model = torch.load(args.model, map_location=device)
+    model.eval()
+
+    # Load the inference dataset
+    inference_dataset = InferenceDataset(root=args.dataset,
+                                transform=transformer.train_transform())
+    # load the specific image
+    img_tensor = inference_dataset[args.image_number]
+
+    # unsqueeze the tensor iamge for model adaptability
+    img_tensor = img_tensor.unsqueeze(0)
+
+    
+    with torch.no_grad():
+        output = model(img_tensor)
+    
+    predicted_label = torch.argmax(output)
+    predicted_label = predicted_label.detach().numpy()
+    show_image(image = img_tensor[0],image_number=args.image_number,pred_label= predicted_label)
 
 if __name__ == '__main__':
     main()
