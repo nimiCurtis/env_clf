@@ -1,7 +1,7 @@
 """
 TODO:
-- make generic with data type. not only depth.
-- change the save img depend on the data type.
+- make generic with data type. not only depth. (future)
+- change the save img depend on the data type. (future)
 """
 
 import os
@@ -42,12 +42,18 @@ def split_to_train_test(bag_batch_folder):
             if filename.is_file() and filename.path.split('.')[-1]=='bag':
                 bag_file = filename.path
                 bag_obj.bag = bag_file
-                move_to(bag_obj, set=set, label = label_name)
+                if bag_obj.MetaData["in_data"]:
+                    print("[INFO]  Bags data already splited to dataset folder")
+                    continue
+                else:
+                    print("[INFO]  Bags data spliting to dataset folder")
+                    move_to(bag_obj, set=set, label = label_name)
+                    bag_obj.update_metadata("in_data",True)
 
 
 def move_to(bag_obj:BagReader,set,label):
     num_imgs = 0
-    
+
     try:
     
         if os.path.exists(bag_obj.MetaData["depth"]):
