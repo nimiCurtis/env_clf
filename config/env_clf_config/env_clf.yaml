@@ -3,7 +3,7 @@ hydra:
     dir: ${path:}/../config/saved_configs/env_clf_config/
 
 defaults:
-  - model: ResNet # EnDNet | ResNet
+  - model: VGG # EnDNet | ResNet | VGG
   - wandb: defaults
 
 # dataset configuration

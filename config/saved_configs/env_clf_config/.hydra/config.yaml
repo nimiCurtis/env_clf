@@ -1,7 +1,7 @@
 model:
-  name: ResNet
-  num_classes: 3
-  version: resnet18
+  name: VGG
+  num_classes: 2
+  version: vgg16
 wandb:
   setup:
     project: env_clf

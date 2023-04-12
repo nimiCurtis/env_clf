@@ -1,0 +1,3 @@
+name: VGG
+num_classes: 2
+version: vgg16 

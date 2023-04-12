@@ -143,7 +143,7 @@ hydra:
     output_dir: /home/nimibot/Documents/nimrodev/Exo_intent/env_clf/config/saved_configs/env_clf_config
     choices:
       wandb: defaults
-      model: ResNet
+      model: VGG
       hydra/env: default
       hydra/callbacks: null
       hydra/job_logging: default

@@ -19,18 +19,64 @@ class EnDNet(nn.Module):
         x = self.fc1(x)
         return x
 
+class VGG(nn.Module):
+    def __init__(self, version='vgg16', pretrained=False, num_classes=2) -> None:
+        super(VGG, self).__init__()
+        self.version = version
+        self.pretrained = pretrained
+        self.num_classes = num_classes
+        self.vgg = self.get_vgg()
+        self.backbone = self.vgg.features
+        self.layer1 = nn.Linear(in_features=512,out_features=self.num_classes)
+        
+        
+    def forward(self, x):
+        x = self.backbone(x)
+        x = x.view(-1,512*1*1)
+        x = self.layer1(x)
+        x = F.relu(x)
+        x = F.softmax(x,dim=1)
+        return x
+    
+    def get_vgg(self):
+        if self.version == 'vgg11':
+            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'vgg11_bn':
+            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'vgg13':
+            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'vgg13_bn':
+            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'vgg16':
+            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'vgg16_bn':
+            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'vgg19':
+            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'vgg19_bn':
+            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+        else:
+            raise ValueError('Invalid VGG version specified')
+        return vgg
+
+
+
+
 class ResNet(nn.Module):
-    def __init__(self, version='resnet18', pretrained=False, num_classes=3) -> None:
+    def __init__(self, version='resnet18', pretrained=False, num_classes=2) -> None:
         super(ResNet, self).__init__()
         self.version = version
         self.pretrained = pretrained
         self.num_classes = num_classes
         self.resnet = self.get_resnet()
-        self.fc = nn.Linear(self.resnet.fc.out_features, self.num_classes)
+        self.backbone = torch.nn.Sequential(*(list(self.resnet.children())[:-1]))
+        
+        self.layer1 = nn.Linear(in_features= 512,out_features=self.num_classes)
         
     def forward(self, x):
-        x = self.resnet(x)
-        x = self.fc(x)
+        x = self.backbone(x)
+        x = x.view(-1, 512*1*1)
+        x = self.layer1(x)
         x = F.relu(x)
         x = F.softmax(x,dim=1)
         return x

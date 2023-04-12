@@ -36,14 +36,13 @@ def split_to_train_test(bag_batch_folder):
 
     # We extract the recording set (either 'train' or 'test') from the configuration file
     set = cfg.recording.set
-    # We extract the numeric label from the configuration file
     label_num = cfg.recording.label
     # We convert the numeric label to a string label name using the EnvLabel enum
     label_name = EnvLabel(label_num).name
 
     # We create a BagReader object, which is a utility class for reading data from bag files
     bag_obj = BagReader()
-
+    
     # We iterate over all files in the folder
     for filename in os.scandir(bag_batch_folder): 
         # We only consider files that have the extension '.bag'
@@ -63,7 +62,7 @@ def split_to_train_test(bag_batch_folder):
 
 def move_to(bag_obj:BagReader,set,label):
     num_imgs = 0
-    
+
     try:
         if os.path.exists(bag_obj.MetaData["depth"]):
             df = pd.read_csv(bag_obj.MetaData["depth"],index_col=0)
