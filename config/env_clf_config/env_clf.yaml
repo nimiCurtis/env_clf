@@ -23,6 +23,10 @@ optimizer:
 criterion:
   name: CrossEntropyLoss # CrossEntropyLoss | BCEWithLogitsLoss
 
+early_stopper:
+  patience: 3
+  delta: 0.1
+
 # training configuration
 training:
   device: cuda    # cpu | cuda
@@ -34,5 +38,5 @@ training:
 
 wandb: 
   run: 
-    enable: false
+    enable: true
     name: ${training.save_path}

@@ -112,11 +112,11 @@ hydra:
     hydra:
     - hydra.mode=RUN
     task:
-    - training.num_epochs=20
+    - optimizer.learning_rate=0.001
   job:
     name: train
     chdir: null
-    override_dirname: training.num_epochs=20
+    override_dirname: optimizer.learning_rate=0.001
     id: ???
     num: ???
     config_name: env_clf

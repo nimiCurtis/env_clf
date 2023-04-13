@@ -1,15 +1,18 @@
-program: train.py
-method: bayes
+## TODO: 
+# - add parameters/expirament
+
+program: env_clf/src/model/train.py
+method: grid
 metric:
   goal: maximize
-  name: test/accuracy
+  name: test_accuracy
 parameters:
-  dataset:
-    values: [mnist, cifar10]
-
+    optimizer.learning_rate: 
+      values: [0.0001, 0.001]
+    
 
 command:
   - ${env}
-  - python
+  - python3
   - ${program}
   - ${args_no_hyphens}
