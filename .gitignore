@@ -2,3 +2,4 @@ bag/*
 .vscode
 __pycache__/
 dataset/*
+models/*
