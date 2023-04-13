@@ -15,6 +15,7 @@ from data.dataset import EnvDataset
 from model.pre_process import Transformer
 from model.utils.visualize import visualize_augmentations
 from model.utils.metrices import MetricMonitor
+from model.utils.early_stopping import EarlyStopper
 from model.eval import calculate_accuracy, evaluate
 from model import models
 
@@ -96,6 +97,9 @@ def main(cfg:DictConfig):
     # Define the data transformations using the custom Transformer class
     transformer = Transformer()
     
+    # Define early-stopper criterion
+    early_stopper = EarlyStopper(patience=5,min_delta=0.1)
+    
     # Load the training and testing datasets
     train_dataset = EnvDataset(root=PATH+'../dataset/real/train',
                                 transform=transformer.train_transform(),
@@ -146,6 +150,10 @@ def main(cfg:DictConfig):
         # Save model
         if training_conf.save and epoch_test_loss < min_loss:
             save(model,os.path.join(models_dir,training_conf.save_path+'.pth'))
+        
+        if early_stopper.early_stop(validation_loss=epoch_test_loss):
+            print("[INFO]  Early stopping..")
+            break
 
 
 if __name__=='__main__':

@@ -12,7 +12,7 @@ wandb:
     log: all
     log_freq: 100
   run:
-    enable: true
+    enable: false
     name: ${training.save_path}
 dataset:
   name: TAUDB
@@ -28,7 +28,7 @@ criterion:
   name: CrossEntropyLoss
 training:
   device: cuda
-  num_epochs: 10
+  num_epochs: 20
   debug: false
   save: true
   save_path: ${model.name}/v_${model.version}_${now:%Y-%m-%d}_${now:%H-%M-%S}

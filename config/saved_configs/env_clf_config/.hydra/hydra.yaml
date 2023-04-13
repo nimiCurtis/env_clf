@@ -112,11 +112,11 @@ hydra:
     hydra:
     - hydra.mode=RUN
     task:
-    - wandb.run.enable=true
+    - training.num_epochs=20
   job:
     name: train
     chdir: null
-    override_dirname: wandb.run.enable=true
+    override_dirname: training.num_epochs=20
     id: ???
     num: ???
     config_name: env_clf
