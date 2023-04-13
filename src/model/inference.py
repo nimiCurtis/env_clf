@@ -1,3 +1,8 @@
+'''
+TODO: 
+- defualt model - takes the first model on a specific dir
+'''
+
 import os
 import sys
 from tqdm import tqdm
@@ -44,7 +49,7 @@ def main():
     parser.add_argument('--dataset', '-d', default=PATH+'../dataset/real/test',
                     help='dataset folder (default: test set folder)')
     
-    parser.add_argument('--model', '-m', default=PATH+'../models/ResNet/v_resnet18_2023-04-03_19-29-35.pth',
+    parser.add_argument('--model', '-m', default=PATH+'../models/ResNet/v_resnet18_2023-04-13_14-04-38.pth',
                     help='model architecture (default: resnet18)')
 
     parser.add_argument('--image','-i',dest='image_number',default=0, type=int, help='Image number')
@@ -76,8 +81,9 @@ def main():
         output = model(img_tensor)
     
     predicted_label = torch.argmax(output)
+    prob = torch.max(output)
     predicted_label = predicted_label.detach().numpy()
-    show_image(image = img_tensor[0],image_number=args.image_number,pred_label= predicted_label)
+    show_image(image = img_tensor[0],image_number=args.image_number,pred_label= predicted_label,prob=prob.detach().float())
 
 if __name__ == '__main__':
     main()

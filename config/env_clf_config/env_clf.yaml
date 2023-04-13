@@ -3,7 +3,7 @@ hydra:
     dir: ${path:}/../config/saved_configs/env_clf_config/
 
 defaults:
-  - model: VGG # EnDNet | ResNet | VGG
+  - model: ResNet  # EnDNet | ResNet | VGG
   - wandb: defaults
 
 # dataset configuration
@@ -18,15 +18,15 @@ dataset:
 # optimizer configuration
 optimizer:
   name: Adam # Adam | SGD
-  learning_rate: 0.001
+  learning_rate: 0.00001
 
 criterion:
   name: CrossEntropyLoss # CrossEntropyLoss | BCEWithLogitsLoss
 
 # training configuration
 training:
-  device: cpu    # cpu | cuda
-  num_epochs: 4
+  device: cuda    # cpu | cuda
+  num_epochs: 10
   debug: false
   save: true
   # save_path: ${model.name}_${model.version:if model.version is not None}_${now:%Y-%m-%d}_${now:%H-%M-%S}

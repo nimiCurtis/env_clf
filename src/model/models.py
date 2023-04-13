@@ -17,23 +17,29 @@ class EnDNet(nn.Module):
         x = self.pool(torch.relu(self.conv1(x)))
         x = x.view(-1, 16*112*112)
         x = self.fc1(x)
+        x = F.softmax(x,dim=1)
         return x
 
 class VGG(nn.Module):
-    def __init__(self, version='vgg16', pretrained=False, num_classes=2) -> None:
+    def __init__(self, version='vgg16', pretrained=False, num_classes=3) -> None:
         super(VGG, self).__init__()
         self.version = version
         self.pretrained = pretrained
         self.num_classes = num_classes
         self.vgg = self.get_vgg()
         self.backbone = self.vgg.features
-        self.layer1 = nn.Linear(in_features=512,out_features=self.num_classes)
+        
+        self.layer1 = nn.Linear(in_features=512*7*7,out_features=4000)
+        self.layer2 = nn.Linear(in_features=1000,out_features=self.num_classes)
+
         
         
     def forward(self, x):
-        x = self.backbone(x)
-        x = x.view(-1,512*1*1)
-        x = self.layer1(x)
+        x = self.vgg(x)
+        # x = x.view(-1,512*7*7)
+        x = self.layer2(x)
+        # x = F.relu(x)
+        # x=self.layer2(x)
         x = F.relu(x)
         x = F.softmax(x,dim=1)
         return x
@@ -63,20 +69,23 @@ class VGG(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, version='resnet18', pretrained=False, num_classes=2) -> None:
+    def __init__(self, version='resnet18', pretrained=False, num_classes=3) -> None:
         super(ResNet, self).__init__()
         self.version = version
         self.pretrained = pretrained
         self.num_classes = num_classes
         self.resnet = self.get_resnet()
         self.backbone = torch.nn.Sequential(*(list(self.resnet.children())[:-1]))
-        
-        self.layer1 = nn.Linear(in_features= 512,out_features=self.num_classes)
+        # self.backbone = self.resnet
+        self.layer1 = nn.Linear(in_features= 512, out_features=1000,bias=True)
+        self.layer2 = nn.Linear(in_features=1000 ,out_features=self.num_classes)
+
         
     def forward(self, x):
         x = self.backbone(x)
         x = x.view(-1, 512*1*1)
         x = self.layer1(x)
+        x=self.layer2(x)
         x = F.relu(x)
         x = F.softmax(x,dim=1)
         return x

@@ -58,7 +58,7 @@ def train(train_loader, model:nn.Module, criterion, optimizer:Optimizer, epoch, 
         )
         
     # Return the average loss and accuracy computed by the MetricMonitor object
-    return metric_monitor.metrics['Loss']['avg'], metric_monitor.metrics['Acc']['avg']
+    return metric_monitor.metrics['Loss']['avg'], metric_monitor.metrics['Accuracy']['avg']
 
 @hydra.main( version_base=None ,config_path="../../config/env_clf_config", config_name = "env_clf")
 def main(cfg:DictConfig):
@@ -104,6 +104,9 @@ def main(cfg:DictConfig):
     test_dataset = EnvDataset(root=PATH+'../dataset/real/test',
                                 transform=transformer.eval_transform(),
                                 target_transform=transformer.one_hot_transform)
+    
+    
+    # visualize_augmentations(train_dataset,samples=20,idx=0)
     
     # Create data loaders to load the datasets in batches
     train_loader = DataLoader(train_dataset, batch_size=dataset_conf.train_batch_size, shuffle=True)
