@@ -30,9 +30,6 @@ class Transformer():
             [   
                 A.Crop(x_min=119,y_min=59,x_max=519,y_max=359),
                 A.Resize(height=224,width=224),
-                # A.Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5)),
-                A.RandomBrightnessContrast(p=0.3),
-                # A.GaussNoise(),
                 ToTensorV2()
             ]
         )

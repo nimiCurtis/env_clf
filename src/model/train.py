@@ -98,7 +98,7 @@ def main(cfg:DictConfig):
     transformer = Transformer()
     
     # Define early-stopper criterion
-    early_stopper = EarlyStopper(patience=5,min_delta=0.1)
+    early_stopper = EarlyStopper(patience=3,min_delta=0.1)
     
     # Load the training and testing datasets
     train_dataset = EnvDataset(root=PATH+'../dataset/real/train',
@@ -149,8 +149,8 @@ def main(cfg:DictConfig):
         
         # Save model
         if training_conf.save and epoch_test_loss < min_loss:
-            save(model,os.path.join(models_dir,training_conf.save_path+'.pth'))
-        
+            save(model.state_dict(),os.path.join(models_dir,training_conf.save_path+'.pt'))
+
         if early_stopper.early_stop(validation_loss=epoch_test_loss):
             print("[INFO]  Early stopping..")
             break

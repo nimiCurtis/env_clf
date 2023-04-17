@@ -1,7 +1,7 @@
 model:
   name: ResNet
   num_classes: 3
-  version: resnet18
+  version: resnet34
 wandb:
   setup:
     project: env_clf
@@ -12,7 +12,7 @@ wandb:
     log: all
     log_freq: 100
   run:
-    enable: true
+    enable: false
     name: ${training.save_path}
 dataset:
   name: TAUDB
@@ -23,7 +23,7 @@ dataset:
   test_dataset_path: ../dataset/real/test
 optimizer:
   name: Adam
-  learning_rate: 0.001
+  learning_rate: 1.0e-05
 criterion:
   name: CrossEntropyLoss
 early_stopper:

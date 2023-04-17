@@ -49,7 +49,7 @@ def main():
     parser.add_argument('--dataset', '-d', default=PATH+'../dataset/real/test',
                     help='dataset folder (default: test set folder)')
     
-    parser.add_argument('--model', '-m', default=PATH+'../models/ResNet/v_resnet18_2023-04-13_14-04-38.pth',
+    parser.add_argument('--model', '-m', default=PATH+'../models/ResNet/v_resnet34_2023-04-17_15-20-22.pt',
                     help='model architecture (default: resnet18)')
 
     parser.add_argument('--image','-i',dest='image_number',default=0, type=int, help='Image number')
@@ -64,7 +64,9 @@ def main():
 
     # Load the model
     device = torch.device('cuda' if args.gpu and torch.cuda.is_available() else 'cpu')
-    model = torch.load(args.model, map_location=device)
+    model = models.ResNet()
+    model.load_state_dict(torch.load(args.model))
+    model.to(device=device)
     model.eval()
 
     # Load the inference dataset
