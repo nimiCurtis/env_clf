@@ -1,10 +1,12 @@
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
-
-import cv2
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import torch
+import albumentations as A
+from albumentations.pytorch import ToTensorV2
+
+# import cv after albumentations 
+# or second solution export LD_PRELOAD=/home/zion/.local/lib/python3.8/site-packages/sklearn/__check_build/../../scikit_learn.libs/libgomp-d22c30c5.so.1.0.0
+import cv2
 
 class Transformer():
     def __init__(self):
