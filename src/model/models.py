@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import models
 from collections import defaultdict
-
+torch.cuda.empty_cache()
 
 # define the EnDNET model
 class EnDNet(nn.Module):
@@ -65,9 +65,6 @@ class VGG(nn.Module):
             raise ValueError('Invalid VGG version specified')
         return vgg
 
-
-
-
 class ResNet(nn.Module):
     def __init__(self, version='resnet18', pretrained=False, num_classes=3) -> None:
         super(ResNet, self).__init__()
@@ -104,4 +101,83 @@ class ResNet(nn.Module):
         else:
             raise ValueError('Invalid ResNet version specified')
         return resnet
+
+
+class ResNext(nn.Module):
+    def __init__(self, version='resnext50_32x4d', pretrained=False, num_classes=3) -> None:
+        super(ResNext, self).__init__()
+        self.version = version
+        self.pretrained = pretrained
+        self.num_classes = num_classes
+        self.resnext = self.get_resnext()
+        self.backbone = torch.nn.Sequential(*(list(self.resnext.children())[:-1]))
+        # self.backbone = self.resnet
+        self.layer1 = nn.Linear(in_features= 2048, out_features=1000,bias=True)
+        self.layer2 = nn.Linear(in_features=1000 ,out_features=self.num_classes)
+
+        
+    def forward(self, x):
+        x = self.backbone(x)
+        x = x.view(-1, 2048*1*1)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = F.relu(x)
+        x = F.softmax(x,dim=1)
+        return x
+    
+    def get_resnext(self):
+        if self.version == 'resnext50_32x4d':
+            resnext = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'resnext101_64x4d':
+            resnext = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'resnext101_32x8d':
+            resnext = getattr(models, self.version)(pretrained=self.pretrained)
+        else:
+            raise ValueError('Invalid ResNext version specified')
+        return resnext
+
+
+
+class EfficientNet(nn.Module):
+    def __init__(self, version='efficientnet_b0', pretrained=False, num_classes=3) -> None:
+        super(EfficientNet, self).__init__()
+        self.version = version
+        self.pretrained = pretrained
+        self.num_classes = num_classes
+        self.efficientnet = self.get_efficientnet()
+        self.backbone = torch.nn.Sequential(*(list(self.efficientnet.children())[:-1]))
+        # self.backbone = self.resnet
+        self.layer1 = nn.Linear(in_features= 1280, out_features=500,bias=True)
+        self.layer2 = nn.Linear(in_features=500 ,out_features=self.num_classes)
+        self.backbone
+        
+    def forward(self, x):
+        x = self.backbone(x)
+        x = x.view(-1, 1280*1*1)
+        x = self.layer1(x)
+        x=self.layer2(x)
+        x = F.relu(x)
+        x = F.softmax(x,dim=1)
+        return x
+    
+    def get_efficientnet(self):
+        if self.version == 'efficientnet_b0':
+            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'efficientnet_b4':
+            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'efficientnet_b5':
+            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'efficientnet_b6':
+            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'efficientnet_b7':
+            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'efficientnet_v2_s':
+            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'efficientnet_v2_s':
+            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+        elif self.version == 'efficientnet_v2_m':
+            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+        else:
+            raise ValueError('Invalid EfficientNet version specified')
+        return efficientnet
 

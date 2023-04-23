@@ -1,4 +1,1 @@
-- training.num_epochs=10
-- model=ResNet
-- model.version=resnet34
-- wandb.run.enable=false
+- dataset.train_batch_size=32

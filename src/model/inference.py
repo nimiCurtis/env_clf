@@ -64,7 +64,10 @@ def main():
 
     # Load the model
     device = torch.device('cuda' if args.gpu and torch.cuda.is_available() else 'cpu')
-    model = models.ResNet()
+    
+    # decode the parent model
+    parent_model = args.model.rsplit('/')[-2]
+    model = getattr(models, parent_model)()
     model.load_state_dict(torch.load(args.model))
     model.to(device=device)
     model.eval()

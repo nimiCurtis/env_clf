@@ -4,9 +4,14 @@ from tqdm import tqdm
 import warnings
 
 import numpy as np
-from torch import nn, optim, manual_seed, save
+from torch import nn, optim, manual_seed, save, cuda
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
+
+# # set max_split_size_mb to 1024
+# cuda.set_per_process_memory_fraction(0.5, device=0)
+# cuda.init()
+# cuda.memory_allocated()
 
 # import from parallel modules
 PATH = os.path.join(os.path.dirname(__file__),'../')
@@ -39,6 +44,7 @@ def train(train_loader, model:nn.Module, criterion, optimizer:Optimizer, epoch, 
         images = images.to(params.device, non_blocking=True)
         target = target.to(params.device, non_blocking=True)
         # Forward pass through the model to get the output predictions
+        cuda.empty_cache()
         output = model(images)
         # Calculate the loss between the model's output and the target labels
         loss = criterion(output, target)
@@ -83,7 +89,7 @@ def main(cfg:DictConfig):
     manual_seed(dataset_conf.seed)
     
     # Load the specified model architecture
-    model = getattr(models, model_conf.name)()
+    model = getattr(models, model_conf.name)(version=model_conf.version, num_classes=training_conf.num_classes)
     
     # Move the model to the specified device (CPU or GPU)
     model = model.to(training_conf.device)
@@ -138,7 +144,7 @@ def main(cfg:DictConfig):
                     "test_loss": epoch_test_loss,
                     "test_accuracy": epoch_test_acc})
 
-            
+
         # Add losses to the relevant list
         epoch_train_total_loss.append(epoch_train_loss)
         epoch_test_total_loss.append(epoch_test_loss)
