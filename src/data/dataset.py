@@ -7,6 +7,7 @@ TODO:
 import os
 import sys
 from omegaconf import OmegaConf
+import matplotlib.pyplot as plt
 
 import numpy as np
 import cv2
@@ -92,6 +93,51 @@ def move_to(bag_obj:BagReader,set,label):
             # Save the image as a .jpg file using OpenCV
             cv2.imwrite(output_filename, cv_img)
 
+def dataset_distribution(dataset_folder=DATASET):
+    
+    train_dir = os.path.join(dataset_folder,"train")
+    test_dir = os.path.join(dataset_folder,"test")
+    
+        # Get the list of classes from the train directory
+    classes = sorted(os.listdir(train_dir))
+
+    # Count the number of images in each class for the train set
+    train_counts = []
+    for cls in classes:
+        cls_path = os.path.join(train_dir, cls)
+        count = len(os.listdir(cls_path))
+        train_counts.append(count)
+
+    # Count the number of images in each class for the test set
+    test_counts = []
+    for cls in classes:
+        cls_path = os.path.join(test_dir, cls)
+        count = len(os.listdir(cls_path))
+        test_counts.append(count)
+
+    # Calculate the total number of images in the train and test sets
+    total_train = sum(train_counts)
+    total_test = sum(test_counts)
+
+    # Visualize the train and test class distributions in pie charts
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    fig.suptitle("Class Distribution")
+
+    ax1.pie(train_counts, labels=classes, autopct='%1.1f%%')
+    ax1.set_title("Train Set (Total: {})".format(total_train))
+
+    ax2.pie(test_counts, labels=classes, autopct='%1.1f%%')
+    ax2.set_title("Test Set (Total: {})".format(total_test))
+    
+    # Add counts per class to the subplots
+    for ax, counts in zip((ax1, ax2), (train_counts, test_counts)):
+        ax.text(-1.5, 1.2, "Counts per Class", fontsize=12, weight="bold")
+        ypos = 1.0
+        for cls, count in zip(classes, counts):
+            ax.text(-1.5, ypos, "{}: {}".format(cls, count), fontsize=10)
+            ypos -= 0.1
+
+    plt.show()
 
 class EnvDataset(ImageFolder):
     
@@ -118,9 +164,13 @@ class EnvDataset(ImageFolder):
 def main():
     # get arguments
     parser = Parser.get_parser()
+    Parser.add_bool_arg(parser,name="dist",default=False)
     args = Parser.get_args(parser)
     try:
-        split_to_train_test(args.bag_batch_folder)
+        if args.bag_batch_folder is not None:
+            split_to_train_test(args.bag_batch_folder)
+        if args.dist:
+            dataset_distribution()
     
     except TypeError as e:
         print(e)
