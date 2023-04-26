@@ -115,8 +115,6 @@ def main(cfg:DictConfig):
                                 target_transform=transformer.one_hot_transform)
     
     
-    # visualize_augmentations(train_dataset,samples=20,idx=0)
-    
     # Create data loaders to load the datasets in batches
     train_loader = DataLoader(train_dataset, batch_size=dataset_conf.train_batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, dataset_conf.test_batch_size, shuffle=False)

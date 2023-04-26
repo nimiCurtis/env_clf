@@ -6,7 +6,15 @@ from tqdm import tqdm
 import torch
 import copy
 import numpy as np
+import argparse
+import sys 
+import os
+from torch.utils.data import DataLoader
 
+PATH = os.path.join(os.path.dirname(__file__),'../../')
+sys.path.insert(0, PATH)
+from model.pre_process import Transformer
+from data.dataset import EnvDataset
 
 def show_image(image,image_number,pred_label,prob=None):
     # convert to numpy image
@@ -21,15 +29,16 @@ def show_image(image,image_number,pred_label,prob=None):
     ax.imshow(img)
     plt.show()
 
-
-def show_batch(images, labels, predictions,step,cols=8,evaluating_loop=False):
+def show_batch(images, labels, predictions,step=None,cols=8,evaluating_loop=False):
     # Get batch size
     batch_size = len(images)
     rows = int(batch_size // cols)
 
     
     fig, ax = plt.subplots(nrows=rows, ncols=cols, figsize=(14, 2*batch_size))
+
     fig.suptitle(f"Actual vs Predicted | Step: {step}", fontsize=10)
+
 
     # Move images tensor from GPU to CPU and convert to numpy array
     images = images.cpu().numpy()
@@ -81,4 +90,38 @@ def visualize_augmentations(dataset, idx=0, samples=10, cols=5):
     plt.tight_layout()
     plt.show()
 
+def main():
+    parser = argparse.ArgumentParser(description ='Dataset visualization')
+    parser.add_argument('--dataset', '-d', default=PATH+'../dataset/real/test',
+                    help='dataset folder (default: test set folder)')
 
+    parser.add_argument('--augmentations',action='store_true', help='Show augmentations (default: 0)')
+    parser.add_argument('--idx', '-i', default=0,
+                    help='Starting img idx (default: 0)')
+    parser.add_argument('--samples', '-s', default=10,
+                    help='Number of samples (default: 0)')
+
+    # Parse the arguments
+    args = parser.parse_args()
+
+    # Define the data transformations using the custom Transformer class
+    transformer = Transformer()
+    # Load the inference dataset
+    dataset = EnvDataset(root=args.dataset,
+                                transform=transformer.train_transform())
+
+    # Create data loaders to load the datasets in batches
+    data_loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=args.shuffle)
+
+    if args.augmentations:
+        visualize_augmentations(dataset=dataset,
+                                idx = args.idx,
+                                samples=args.samples)
+    # elif args.batch_viz:
+    #     images = next(iter(data_loader))[args.b_idx]
+    #     show_batch(images=images)
+
+    #     )
+
+if __name__ == '__main__':
+    main()
