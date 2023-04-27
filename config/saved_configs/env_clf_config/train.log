@@ -307,3 +307,6 @@
 [2023-04-23 16:46:44,758][rospy.core][INFO] - signal_shutdown [atexit]
 [2023-04-23 16:47:57,373][rospy.core][INFO] - signal_shutdown [atexit]
 [2023-04-23 17:08:19,396][rospy.core][INFO] - signal_shutdown [atexit]
+[2023-04-27 17:47:18,544][rospy.core][INFO] - signal_shutdown [atexit]
+[2023-04-27 17:51:17,771][rospy.core][INFO] - signal_shutdown [atexit]
+[2023-04-27 17:58:07,653][rospy.core][INFO] - signal_shutdown [atexit]

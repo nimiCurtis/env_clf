@@ -1,6 +1,7 @@
 '''
 TODO: 
 - defualt model - takes the first model on a specific dir
+- num_classes - based on cfg
 '''
 
 import os
@@ -67,7 +68,7 @@ def main():
     
     # decode the parent model
     parent_model = args.model.rsplit('/')[-2]
-    model = getattr(models, parent_model)()
+    model = getattr(models, parent_model)(num_classes=4)
     model.load_state_dict(torch.load(args.model))
     model.to(device=device)
     model.eval()

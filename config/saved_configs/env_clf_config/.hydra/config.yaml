@@ -1,6 +1,6 @@
 model:
-  name: ResNext
-  version: resnext50_32x4d
+  name: ResNet
+  version: resnet18
 wandb:
   setup:
     project: env_clf
@@ -11,7 +11,7 @@ wandb:
     log: all
     log_freq: 100
   run:
-    enable: false
+    enable: true
     name: ${training.save_path}
 dataset:
   name: TAUDB
@@ -31,7 +31,7 @@ early_stopper:
 training:
   device: cuda
   num_epochs: 10
-  num_classes: 3
+  num_classes: 4
   debug: false
   save: true
   save_path: ${model.name}/v_${model.version}_${now:%Y-%m-%d}_${now:%H-%M-%S}

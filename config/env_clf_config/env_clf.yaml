@@ -3,7 +3,7 @@ hydra:
     dir: ${path:}/../config/saved_configs/env_clf_config/
 
 defaults:
-  - model: ResNext  # EnDNet | ResNet | ResNext | VGG | EfficientNet 
+  - model: ResNet  # EnDNet | ResNet | ResNext | VGG | EfficientNet 
   - wandb: defaults
 
 # dataset configuration
@@ -31,7 +31,7 @@ early_stopper:
 training:
   device: cuda    # cpu | cuda
   num_epochs: 10
-  num_classes: 3
+  num_classes: 4
   debug: false
   save: true
   # save_path: ${model.name}_${model.version:if model.version is not None}_${now:%Y-%m-%d}_${now:%H-%M-%S}

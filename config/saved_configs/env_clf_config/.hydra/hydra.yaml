@@ -112,11 +112,11 @@ hydra:
     hydra:
     - hydra.mode=RUN
     task:
-    - dataset.train_batch_size=32
+    - wandb.run.enable=true
   job:
     name: train
     chdir: null
-    override_dirname: dataset.train_batch_size=32
+    override_dirname: wandb.run.enable=true
     id: ???
     num: ???
     config_name: env_clf
@@ -144,7 +144,7 @@ hydra:
     output_dir: /home/roblab20/catkin_ws/src/Exo_Intent/env_clf/config/saved_configs/env_clf_config
     choices:
       wandb: defaults
-      model: ResNext
+      model: ResNet
       hydra/env: default
       hydra/callbacks: null
       hydra/job_logging: default

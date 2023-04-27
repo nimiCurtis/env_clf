@@ -5,3 +5,4 @@ class EnvLabel(Enum):
     SA = 2
     SD = 3
     W = 4
+    
