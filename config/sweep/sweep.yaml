@@ -1,15 +1,21 @@
 ## TODO: 
 # - add parameters/expirament
 
+project: env_clf
+entity: nimrodcurtis
 program: env_clf/src/model/train.py
+name: sweep_  # give name
 method: grid
 metric:
   goal: maximize
   name: test_accuracy
 parameters:
+    wandb.run.enable: 
+      values: [true]
+    training.num_epochs:
+      values: [2]
     optimizer.learning_rate: 
       values: [0.0001, 0.001]
-    
 
 command:
   - ${env}

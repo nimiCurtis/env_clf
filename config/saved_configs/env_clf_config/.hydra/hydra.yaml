@@ -112,11 +112,13 @@ hydra:
     hydra:
     - hydra.mode=RUN
     task:
-    - wandb.run.enable=true
+    - optimizer.learning_rate=0.001
+    - training.num_epochs=2
+    - wandb.run.enable=True
   job:
     name: train
     chdir: null
-    override_dirname: wandb.run.enable=true
+    override_dirname: optimizer.learning_rate=0.001,training.num_epochs=2,wandb.run.enable=True
     id: ???
     num: ???
     config_name: env_clf
