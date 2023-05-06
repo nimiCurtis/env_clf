@@ -31,7 +31,7 @@ class VGG(nn.Module):
         
         self.layer1 = nn.Linear(in_features=512*7*7,out_features=4000)
         self.layer2 = nn.Linear(in_features=1000,out_features=self.num_classes)
-
+        
         
         
     def forward(self, x):

@@ -6,9 +6,9 @@ TODO:
 
 import os
 import sys
-from tqdm import tqdm
 import warnings
 import argparse
+from omegaconf import OmegaConf
 
 import numpy as np
 import torch
@@ -66,9 +66,15 @@ def main():
     # Load the model
     device = torch.device('cuda' if args.gpu and torch.cuda.is_available() else 'cpu')
     
+    
     # decode the parent model
     parent_model = args.model.rsplit('/')[-2]
-    model = getattr(models, parent_model)(num_classes=4)
+    # decode the version 
+    model_version = args.model.rsplit('/')[-1]
+    # take the cfg
+    model_cfg_path = os.path.join(os.path.join('../config/saved_configs/env_clf_config',model_version),'.hydra/config.yaml')
+    model_cfg = OmegaConf.load(model_cfg_path)
+    model = getattr(models, parent_model)(num_classes=model_cfg.training.num_classes)
     model.load_state_dict(torch.load(args.model))
     model.to(device=device)
     model.eval()
