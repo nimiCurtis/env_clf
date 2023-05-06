@@ -12,7 +12,7 @@ dataset:
   name: TAUDB
   seed: 42
   train_batch_size: 32 # high batch size will make memory error
-  test_batch_size: 32
+  test_batch_size: 64
   train_dataset_path: ../dataset/real/train
   test_dataset_path: ../dataset/real/test
 
@@ -32,7 +32,7 @@ early_stopper:
 training:
   device: cuda    # cpu | cuda
   num_epochs: 10
-  num_classes: 4
+  num_classes: 5
   debug: false
   save: true
   # save_path: ${model.name}_${model.version:if model.version is not None}_${now:%Y-%m-%d}_${now:%H-%M-%S}

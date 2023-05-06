@@ -5,6 +5,8 @@ from torchvision import models
 from collections import defaultdict
 torch.cuda.empty_cache()
 
+from torchvision.models import ResNet18_Weights
+
 # define the EnDNET model
 class EnDNet(nn.Module):
     def __init__(self):
@@ -21,10 +23,10 @@ class EnDNet(nn.Module):
         return x
 
 class VGG(nn.Module):
-    def __init__(self, version='vgg16', pretrained=False, num_classes=3) -> None:
+    def __init__(self, version='vgg16', weights=None, num_classes=3) -> None:
         super(VGG, self).__init__()
         self.version = version
-        self.pretrained = pretrained
+        self.weights = weights
         self.num_classes = num_classes
         self.vgg = self.get_vgg()
         self.backbone = self.vgg.features
@@ -46,30 +48,31 @@ class VGG(nn.Module):
     
     def get_vgg(self):
         if self.version == 'vgg11':
-            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+            vgg = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'vgg11_bn':
-            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+            vgg = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'vgg13':
-            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+            vgg = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'vgg13_bn':
-            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+            vgg = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'vgg16':
-            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+            vgg = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'vgg16_bn':
-            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+            vgg = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'vgg19':
-            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+            vgg = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'vgg19_bn':
-            vgg = getattr(models, self.version)(pretrained=self.pretrained)
+            vgg = getattr(models, self.version)(weights=self.weights)
         else:
             raise ValueError('Invalid VGG version specified')
         return vgg
 
 class ResNet(nn.Module):
-    def __init__(self, version='resnet18', pretrained=False, num_classes=3) -> None:
+    def __init__(self, version='resnet18', weights=None, num_classes=3) -> None:
         super(ResNet, self).__init__()
         self.version = version
-        self.pretrained = pretrained
+        self.weights = weights
+
         self.num_classes = num_classes
         self.resnet = self.get_resnet()
         self.backbone = torch.nn.Sequential(*(list(self.resnet.children())[:-1]))
@@ -89,25 +92,25 @@ class ResNet(nn.Module):
     
     def get_resnet(self):
         if self.version == 'resnet18':
-            resnet = getattr(models, self.version)(pretrained=self.pretrained)
+            resnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'resnet34':
-            resnet = getattr(models, self.version)(pretrained=self.pretrained)
+            resnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'resnet50':
-            resnet = getattr(models, self.version)(pretrained=self.pretrained)
+            resnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'resnet101':
-            resnet = getattr(models, self.version)(pretrained=self.pretrained)
+            resnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'resnet152':
-            resnet = getattr(models, self.version)(pretrained=self.pretrained)
+            resnet = getattr(models, self.version)(weights=self.weights)
         else:
             raise ValueError('Invalid ResNet version specified')
         return resnet
 
 
 class ResNext(nn.Module):
-    def __init__(self, version='resnext50_32x4d', pretrained=False, num_classes=3) -> None:
+    def __init__(self, version='resnext50_32x4d', weights = None, num_classes=3) -> None:
         super(ResNext, self).__init__()
         self.version = version
-        self.pretrained = pretrained
+        self.weights = weights
         self.num_classes = num_classes
         self.resnext = self.get_resnext()
         self.backbone = torch.nn.Sequential(*(list(self.resnext.children())[:-1]))
@@ -127,11 +130,11 @@ class ResNext(nn.Module):
     
     def get_resnext(self):
         if self.version == 'resnext50_32x4d':
-            resnext = getattr(models, self.version)(pretrained=self.pretrained)
+            resnext = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'resnext101_64x4d':
-            resnext = getattr(models, self.version)(pretrained=self.pretrained)
+            resnext = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'resnext101_32x8d':
-            resnext = getattr(models, self.version)(pretrained=self.pretrained)
+            resnext = getattr(models, self.version)(weights=self.weights)
         else:
             raise ValueError('Invalid ResNext version specified')
         return resnext
@@ -139,10 +142,10 @@ class ResNext(nn.Module):
 
 
 class EfficientNet(nn.Module):
-    def __init__(self, version='efficientnet_b0', pretrained=False, num_classes=3) -> None:
+    def __init__(self, version='efficientnet_b0', weights = None, num_classes=3) -> None:
         super(EfficientNet, self).__init__()
         self.version = version
-        self.pretrained = pretrained
+        self.weights = weights
         self.num_classes = num_classes
         self.efficientnet = self.get_efficientnet()
         self.backbone = torch.nn.Sequential(*(list(self.efficientnet.children())[:-1]))
@@ -162,21 +165,21 @@ class EfficientNet(nn.Module):
     
     def get_efficientnet(self):
         if self.version == 'efficientnet_b0':
-            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+            efficientnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'efficientnet_b4':
-            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+            efficientnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'efficientnet_b5':
-            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+            efficientnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'efficientnet_b6':
-            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+            efficientnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'efficientnet_b7':
-            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+            efficientnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'efficientnet_v2_s':
-            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+            efficientnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'efficientnet_v2_s':
-            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+            efficientnet = getattr(models, self.version)(weights=self.weights)
         elif self.version == 'efficientnet_v2_m':
-            efficientnet = getattr(models, self.version)(pretrained=self.pretrained)
+            efficientnet = getattr(models, self.version)(weights=self.weights)
         else:
             raise ValueError('Invalid EfficientNet version specified')
         return efficientnet

@@ -111,11 +111,15 @@ hydra:
   overrides:
     hydra:
     - hydra.mode=RUN
-    task: []
+    task:
+    - wandb.run.enable=true
+    - model=ResNet
+    - dataset.train_batch_size=16
+    - dataset.test_batch_size=16
   job:
     name: train
     chdir: null
-    override_dirname: ''
+    override_dirname: dataset.test_batch_size=16,dataset.train_batch_size=16,model=ResNet,wandb.run.enable=true
     id: ???
     num: ???
     config_name: env_clf
@@ -127,20 +131,20 @@ hydra:
         item_sep: ','
         exclude_keys: []
   runtime:
-    version: 1.2.0
-    version_base: '1.2'
-    cwd: /home/nimibot/Documents/nimrodev/Exo_intent
+    version: 1.3.1
+    version_base: '1.3'
+    cwd: /home/roblab20/catkin_ws/src/Exo_Intent
     config_sources:
     - path: hydra.conf
       schema: pkg
       provider: hydra
-    - path: /home/nimibot/Documents/nimrodev/Exo_intent/env_clf/config/env_clf_config
+    - path: /home/roblab20/catkin_ws/src/Exo_Intent/env_clf/config/env_clf_config
       schema: file
       provider: main
     - path: ''
       schema: structured
       provider: schema
-    output_dir: /home/nimibot/Documents/nimrodev/Exo_intent/env_clf/config/saved_configs/env_clf_config/v_resnet18_2023-05-06_11-18-16
+    output_dir: /home/roblab20/catkin_ws/src/Exo_Intent/env_clf/config/saved_configs/env_clf_config/v_resnet18_2023-05-06_16-48-17
     choices:
       wandb: defaults
       model: ResNet

@@ -1,0 +1,4 @@
+- wandb.run.enable=true
+- model=ResNet
+- dataset.train_batch_size=16
+- dataset.test_batch_size=16
