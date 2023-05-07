@@ -74,7 +74,7 @@ def main():
     # take the cfg
     model_cfg_path = os.path.join(os.path.join(PATH+'../config/saved_configs/env_clf_config',model_version),'.hydra/config.yaml')
     model_cfg = OmegaConf.load(model_cfg_path)
-    model = getattr(models, parent_model)(num_classes=model_cfg.training.num_classes)
+    model = getattr(models, parent_model)(version=model_cfg.model.version,num_classes=model_cfg.training.num_classes)
     model.load_state_dict(torch.load(args.model))
     model.to(device=device)
     model.eval()
