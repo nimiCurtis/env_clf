@@ -4,7 +4,7 @@
 project: env_clf
 entity: nimrodcurtis
 program: env_clf/src/model/train.py
-name: sweep_  # give name
+name: sweep_resnext  # give name
 method: grid
 metric:
   goal: maximize
@@ -13,15 +13,15 @@ parameters:
     wandb.run.enable: 
       values: [true]
     model.name:
-      values: [ResNet]
+      values: [ResNext]
     model.version:
-      values: [resnet18,resnet34]
+      values: [resnext50_32x4d,resnext101_64x4d]
     training.num_epochs:
       values: [10,20]
     dataset.train_batch_size:
       values: [16,24,32]
     optimizer.learning_rate: 
-      values: [0.0001, 0.00005, 0.00001]
+      values: [0.0001, 0.00001]
 
 command:
   - ${env}

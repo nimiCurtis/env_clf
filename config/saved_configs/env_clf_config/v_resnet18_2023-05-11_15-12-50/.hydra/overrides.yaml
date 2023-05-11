@@ -1,0 +1,3 @@
+- model=ResNet
+- dataset.train_batch_size=16
+- training.debug=true
