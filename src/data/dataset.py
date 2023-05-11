@@ -37,9 +37,7 @@ def split_to_train_test(bag_batch_folder):
 
     # We extract the recording set (either 'train' or 'test') from the configuration file
     set = cfg.recording.set
-    label_num = cfg.recording.label
-    # We convert the numeric label to a string label name using the EnvLabel enum
-    label_name = EnvLabel(label_num).name
+    label_name= cfg.recording.label
 
     # We create a BagReader object, which is a utility class for reading data from bag files
     bag_obj = BagReader()

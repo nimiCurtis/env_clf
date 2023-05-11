@@ -4,7 +4,8 @@ class EnvLabel(Enum):
     GL = 1
     SA = 2
     SD = 3
-    W = 4
-    SSA = 5
-    SSD = 6
+    SSA = 4
+    SSD = 5
+    W = 6
+    
     
