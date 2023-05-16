@@ -1,0 +1,3 @@
+- model=ResNext
+- dataset.train_batch_size=24
+- optimizer.learning_rate=0.00005

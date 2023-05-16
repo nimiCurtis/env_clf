@@ -1,2 +1,5 @@
 name: VGG
 version: vgg11_bn 
+classifier_layer: 
+  linear1_out: 
+  linear3_in: 

@@ -88,7 +88,7 @@ def main(cfg:DictConfig):
     manual_seed(dataset_conf.seed)
     
     # Load the specified model architecture
-    model = getattr(models, model_conf.name)(version=model_conf.version, num_classes=training_conf.num_classes)
+    model = getattr(models, model_conf.name)(version=model_conf.version, num_classes=training_conf.num_classes, classifier_cfg=model_conf.classifier_layer )
     
     # Move the model to the specified device (CPU or GPU)
     model = model.to(training_conf.device)

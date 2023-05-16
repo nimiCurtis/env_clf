@@ -1,2 +1,5 @@
 name: ResNet
-version: resnet18 
+version: resnet18 # resnet18 | resnet34 | resnet50 |resnet101 | resnet152 
+classifier_layer: 
+  linear1_out: 256
+  linear2_out: 128

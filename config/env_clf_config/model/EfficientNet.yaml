@@ -1,2 +1,5 @@
 name: EfficientNet
 version: efficientnet_v2_s # efficientnet_b0/4/5/6/7/v2_s/v2_m/v2_l
+classifier_layer: 
+  linear1_out: 512 
+  linear2_out: 256

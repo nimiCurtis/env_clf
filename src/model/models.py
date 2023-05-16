@@ -22,6 +22,8 @@ class EnDNet(nn.Module):
         x = F.softmax(x,dim=1)
         return x
 
+
+## modoify VGG
 class VGG(nn.Module):
     def __init__(self, version='vgg16', weights=None, num_classes=3) -> None:
         super(VGG, self).__init__()
@@ -68,25 +70,32 @@ class VGG(nn.Module):
         return vgg
 
 class ResNet(nn.Module):
-    def __init__(self, version='resnet18', weights=None, num_classes=3) -> None:
+    def __init__(self, version='resnet18', weights=None, num_classes=3, classifier_cfg=None) -> None:
         super(ResNet, self).__init__()
         self.version = version
         self.weights = weights
-
+        if classifier_cfg is not None:
+            linear1_out, linear2_out = classifier_cfg.linear1_out, classifier_cfg.linear2_out
+        else:
+            linear1_out, linear2_out = 256, 128
+            
         self.num_classes = num_classes
         self.resnet = self.get_resnet()
         self.backbone = torch.nn.Sequential(*(list(self.resnet.children())[:-1]))
-        # self.backbone = self.resnet
-        self.layer1 = nn.Linear(in_features= 512, out_features=1000,bias=True)
-        self.layer2 = nn.Linear(in_features=1000 ,out_features=self.num_classes)
+
+        self.classifier_layer = nn.Sequential(
+            nn.Linear(512 , linear1_out),
+            nn.BatchNorm1d(linear1_out),
+            nn.Dropout(0.2),
+            nn.Linear(linear1_out , linear2_out),
+            nn.Linear(linear2_out , num_classes)
+        )
 
         
     def forward(self, x):
         x = self.backbone(x)
         x = x.view(-1, 512*1*1)
-        x = self.layer1(x)
-        x=self.layer2(x)
-        x = F.relu(x)
+        x = self.classifier_layer(x)
         x = F.softmax(x,dim=1)
         return x
     
@@ -107,24 +116,31 @@ class ResNet(nn.Module):
 
 
 class ResNext(nn.Module):
-    def __init__(self, version='resnext50_32x4d', weights = None, num_classes=3) -> None:
+    def __init__(self, version='resnext50_32x4d', weights = None, num_classes=3, classifier_cfg = None) -> None:
         super(ResNext, self).__init__()
         self.version = version
         self.weights = weights
         self.num_classes = num_classes
         self.resnext = self.get_resnext()
         self.backbone = torch.nn.Sequential(*(list(self.resnext.children())[:-1]))
-        # self.backbone = self.resnet
-        self.layer1 = nn.Linear(in_features= 2048, out_features=1000,bias=True)
-        self.layer2 = nn.Linear(in_features=1000 ,out_features=self.num_classes)
 
+        if classifier_cfg is not None:
+            linear1_out, linear2_out = classifier_cfg.linear1_out, classifier_cfg.linear2_out
+        else:
+            linear1_out, linear2_out = 512, 256
+        
+        self.classifier_layer = nn.Sequential(
+            nn.Linear(2048 , linear1_out),
+            nn.BatchNorm1d(linear1_out),
+            nn.Dropout(0.2),
+            nn.Linear(linear1_out , linear2_out),
+            nn.Linear(linear2_out , num_classes)
+        )
         
     def forward(self, x):
         x = self.backbone(x)
         x = x.view(-1, 2048*1*1)
-        x = self.layer1(x)
-        x = self.layer2(x)
-        x = F.relu(x)
+        x = self.classifier_layer(x)
         x = F.softmax(x,dim=1)
         return x
     
@@ -142,24 +158,31 @@ class ResNext(nn.Module):
 
 
 class EfficientNet(nn.Module):
-    def __init__(self, version='efficientnet_b0', weights = None, num_classes=3) -> None:
+    def __init__(self, version='efficientnet_b0', weights = None, num_classes=3, classifier_cfg=None) -> None:
         super(EfficientNet, self).__init__()
         self.version = version
         self.weights = weights
         self.num_classes = num_classes
         self.efficientnet = self.get_efficientnet()
         self.backbone = torch.nn.Sequential(*(list(self.efficientnet.children())[:-1]))
-        # self.backbone = self.resnet
-        self.layer1 = nn.Linear(in_features= 1280, out_features=500,bias=True)
-        self.layer2 = nn.Linear(in_features=500 ,out_features=self.num_classes)
-        self.backbone
+        
+        if classifier_cfg is not None:
+            linear1_out, linear2_out = classifier_cfg.linear1_out, classifier_cfg.linear2_out
+        else:
+            linear1_out, linear2_out = 512, 256
+        
+        self.classifier_layer = nn.Sequential(
+            nn.Linear(1280 , linear1_out),
+            nn.BatchNorm1d(linear1_out),
+            nn.Dropout(0.2),
+            nn.Linear(linear1_out , linear2_out),
+            nn.Linear(linear2_out , num_classes)
+        )
         
     def forward(self, x):
         x = self.backbone(x)
         x = x.view(-1, 1280*1*1)
-        x = self.layer1(x)
-        x=self.layer2(x)
-        x = F.relu(x)
+        x = self.classifier_layer(x)
         x = F.softmax(x,dim=1)
         return x
     

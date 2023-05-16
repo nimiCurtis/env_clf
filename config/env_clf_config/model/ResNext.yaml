@@ -1,2 +1,5 @@
 name: ResNext
 version: resnext50_32x4d # resnext50_32x4d |resnext101_64x4d | resnext101_32x8d
+classifier_layer: 
+  linear1_out: 512 
+  linear2_out: 256
