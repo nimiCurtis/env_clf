@@ -1,0 +1,37 @@
+dataset:
+  name: TAUDB
+  seed: 42
+  train_batch_size: 16
+  test_batch_size: 64
+  train_dataset_path: ../dataset/real/train
+  test_dataset_path: ../dataset/real/test
+optimizer:
+  name: Adam
+  learning_rate: 5.0e-05
+criterion:
+  name: CrossEntropyLoss
+early_stopper:
+  patience: 3
+  delta: 0.1
+training:
+  device: cuda
+  num_epochs: 20
+  num_classes: 6
+  debug: false
+  save: true
+  save_path: ${model.name}/v_${model.version}_${now:%Y-%m-%d}_${now:%H-%M-%S}
+wandb:
+  run:
+    enable: true
+    name: ${training.save_path}
+  setup:
+    project: env_clf
+    entity: nimrodcurtis
+    name: null
+    mode: online
+  watch:
+    log: all
+    log_freq: 100
+model:
+  name: ResNet
+  version: resnet18
