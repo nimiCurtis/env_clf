@@ -25,7 +25,7 @@ class EnDNet(nn.Module):
 
 ## modoify VGG
 class VGG(nn.Module):
-    def __init__(self, version='vgg16', weights=None, num_classes=3) -> None:
+    def __init__(self, version='vgg16', weights=None, num_classes=6) -> None:
         super(VGG, self).__init__()
         self.version = version
         self.weights = weights
@@ -70,7 +70,7 @@ class VGG(nn.Module):
         return vgg
 
 class ResNet(nn.Module):
-    def __init__(self, version='resnet18', weights=None, num_classes=3, classifier_cfg=None) -> None:
+    def __init__(self, version='resnet18', weights=None, num_classes=6, classifier_cfg=None) -> None:
         super(ResNet, self).__init__()
         self.version = version
         self.weights = weights
@@ -116,7 +116,7 @@ class ResNet(nn.Module):
 
 
 class ResNext(nn.Module):
-    def __init__(self, version='resnext50_32x4d', weights = None, num_classes=3, classifier_cfg = None) -> None:
+    def __init__(self, version='resnext50_32x4d', weights = None, num_classes=6, classifier_cfg = None) -> None:
         super(ResNext, self).__init__()
         self.version = version
         self.weights = weights
@@ -158,7 +158,7 @@ class ResNext(nn.Module):
 
 
 class EfficientNet(nn.Module):
-    def __init__(self, version='efficientnet_b0', weights = None, num_classes=3, classifier_cfg=None) -> None:
+    def __init__(self, version='efficientnet_b0', weights = None, num_classes=6, classifier_cfg=None) -> None:
         super(EfficientNet, self).__init__()
         self.version = version
         self.weights = weights
