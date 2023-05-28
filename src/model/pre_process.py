@@ -1,12 +1,9 @@
-import matplotlib.pyplot as plt
-from tqdm import tqdm
 import torch
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
-# import cv after albumentations 
+# issue: import cv after albumentations 
 # or second solution export LD_PRELOAD=/home/zion/.local/lib/python3.8/site-packages/sklearn/__check_build/../../scikit_learn.libs/libgomp-d22c30c5.so.1.0.0
-import cv2
 
 class Transformer():
     def __init__(self):
@@ -20,7 +17,6 @@ class Transformer():
                 # A.Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5)),
                 A.GaussNoise(mean=0.5,var_limit=[10,10],p=0.1),
                 A.RandomBrightnessContrast(p=0.2),
-                
                 ToTensorV2(),
             ]
         )
