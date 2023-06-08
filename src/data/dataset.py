@@ -14,7 +14,7 @@ import cv2
 import pandas as pd
 
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, Subset
 from torchvision.datasets import ImageFolder
 
 PATH = os.path.join(os.path.dirname(__file__),'../../../')
@@ -139,9 +139,10 @@ def dataset_distribution(dataset_folder=DATASET):
 
 class EnvDataset(ImageFolder):
     
-    def __init__(self, root, transform=None, target_transform=None):
+    def __init__(self, root,fraction=1.0, transform=None, target_transform=None):
         super().__init__(root, transform=transform, target_transform=target_transform)
         self.num_classes = len(self.classes)
+        self.fraction = fraction
     
     def __getitem__(self, index):
         path, target = self.samples[index]
@@ -157,6 +158,18 @@ class EnvDataset(ImageFolder):
             target = torch.tensor(target)
 
         return image, target
+
+    def get_subset_dataset(self):
+        subset_indices = []
+        class_counts = self.targets.count(max(self.targets)) + 1
+
+        for class_idx in range(class_counts):
+            class_indices = [i for i, target in enumerate(self.targets) if target == class_idx]
+            selected_indices = class_indices[:int(len(class_indices) * self.fraction)]
+            subset_indices.extend(selected_indices)
+
+        return Subset(self, subset_indices)
+
 
 
 def main():

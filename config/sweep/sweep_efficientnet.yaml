@@ -12,16 +12,20 @@ metric:
 parameters:
     wandb.run.enable: 
       values: [true]
+    dataset.subset_fraction:
+      values: [0.56,0.31,0.86]
     model.name:
       values: [EfficientNet]
     model.version:
-      values: [efficientnet_b0,efficientnet_v2_s]
+      values: [efficientnet_b0]
     training.num_epochs:
       values: [15]
+    training.save:
+      values: [false]
     dataset.train_batch_size:
-      values: [16,24]
+      values: [24]
     optimizer.learning_rate: 
-      values: [0.00005, 0.00001]
+      values: [0.00005] #  0.00001
 
 command:
   - ${env}

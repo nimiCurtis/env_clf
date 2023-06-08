@@ -105,11 +105,15 @@ def main(cfg:DictConfig):
     early_stopper = EarlyStopper(patience=3,min_delta=0.1)
     
     # Load the training and testing datasets
-    train_dataset = EnvDataset(root=PATH+'../dataset/real/train',
+    train_dataset = EnvDataset(root=PATH+dataset_conf.train_dataset_path,
+                                fraction=dataset_conf.subset_fraction,
                                 transform=transformer.train_transform(),
                                 target_transform=transformer.one_hot_transform)
+    
+    if dataset_conf.subset_fraction != 1.0:
+        train_dataset = train_dataset.get_subset_dataset()
 
-    test_dataset = EnvDataset(root=PATH+'../dataset/real/test',
+    test_dataset = EnvDataset(root=PATH+dataset_conf.test_dataset_path,
                                 transform=transformer.eval_transform(),
                                 target_transform=transformer.one_hot_transform)
     

@@ -15,6 +15,7 @@ dataset:
   test_batch_size: 64
   train_dataset_path: ../dataset/real/train
   test_dataset_path: ../dataset/real/test
+  subset_fraction: 1.0
 
 # optimizer configuration
 optimizer:
