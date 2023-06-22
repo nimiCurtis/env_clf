@@ -7,11 +7,6 @@ from torch import nn, optim, manual_seed, save, cuda
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 
-# # set max_split_size_mb to 1024
-# cuda.set_per_process_memory_fraction(0.5, device=0)
-# cuda.init()
-# cuda.memory_allocated()
-
 # import from parallel modules
 PATH = os.path.join(os.path.dirname(__file__),'../')
 sys.path.insert(0, PATH)
