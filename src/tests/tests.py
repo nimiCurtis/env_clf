@@ -26,7 +26,7 @@ def plot_test_data_amount(file_path):
     # Set x-axis ticks with 0.05 steps
     plt.xticks(np.arange(min(fraction), max(fraction)+0.05, 0.05))
     # Set y-axis ticks with 0.01 steps
-    plt.yticks(np.arange(min(test_accuracy), max(test_accuracy)+0.01, 0.02))
+    plt.yticks(np.arange(min(test_accuracy), 1.0, 0.02))
     
     plt.show()
 
