@@ -91,7 +91,8 @@ class ResNet(nn.Module):
             nn.Linear(linear2_out , num_classes)
         )
 
-        
+
+
     def forward(self, x):
         x = self.backbone(x)
         x = x.view(-1, 512*1*1)
@@ -165,12 +166,14 @@ class EfficientNet(nn.Module):
         self.num_classes = num_classes
         self.efficientnet = self.get_efficientnet()
         self.backbone = torch.nn.Sequential(*(list(self.efficientnet.children())[:-1]))
-        
+
+
         if classifier_cfg is not None:
             linear1_out, linear2_out = classifier_cfg.linear1_out, classifier_cfg.linear2_out
         else:
             linear1_out, linear2_out = 512, 256
-        
+
+
         self.classifier_layer = nn.Sequential(
             nn.Linear(1280 , linear1_out),
             nn.BatchNorm1d(linear1_out),
@@ -178,14 +181,16 @@ class EfficientNet(nn.Module):
             nn.Linear(linear1_out , linear2_out),
             nn.Linear(linear2_out , num_classes)
         )
-        
+
+
     def forward(self, x):
         x = self.backbone(x)
         x = x.view(-1, 1280*1*1)
         x = self.classifier_layer(x)
         x = F.softmax(x,dim=1)
         return x
-    
+
+
     def get_efficientnet(self):
         if self.version == 'efficientnet_b0':
             efficientnet = getattr(models, self.version)(weights=self.weights)
