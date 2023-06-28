@@ -40,11 +40,7 @@ def main():
     parser.add_argument('--f', dest='file_path', type=str, help='Path to the CSV file.')
     parser.add_argument('--data_amount', dest='data_amount', action='store_true', default=False,
                         help='Flag indicating if the test to be executed is data_amount.')
-
-
     args = parser.parse_args()
-    args.file_path = '/home/nimrod/catkin_ws/src/Exo_Intent/env_clf/src/tests/test_data_amount/test_efficientnetb0_bs24_lr0.00005_ep15.csv'
-    args.data_amount =  True
     if args.data_amount:
         plot_test_data_amount(args.file_path)
 
