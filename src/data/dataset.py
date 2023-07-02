@@ -137,6 +137,13 @@ def dataset_distribution(dataset_folder=DATASET):
 
     plt.show()
 
+def split_all_to_train_test(bag_folder:str)->None:
+    print(f"[INFO]  Spliting folder - {bag_folder}")
+    for filename in os.scandir(bag_folder): 
+        if filename.is_dir() and 'bag_batch' in filename.path:
+                    split_to_train_test(filename.path)
+
+
 class EnvDataset(ImageFolder):
     
     def __init__(self, root,fraction=1.0, transform=None, target_transform=None):
@@ -178,6 +185,9 @@ def main():
     Parser.add_bool_arg(parser,name="dist",default=False)
     args = Parser.get_args(parser)
     try:
+        if args.folder_of_batches is not None:
+            split_all_to_train_test(args.folder_of_batches)
+            
         if args.bag_batch_folder is not None:
             split_to_train_test(args.bag_batch_folder)
         if args.dist:
