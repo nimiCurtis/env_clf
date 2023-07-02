@@ -3,3 +3,4 @@ bag/*
 __pycache__/
 dataset/*
 models/*
+bag_experiments/
