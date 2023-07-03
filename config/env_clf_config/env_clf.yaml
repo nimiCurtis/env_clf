@@ -4,15 +4,15 @@ hydra:
 
 defaults:
   - _self_
-  - model: ResNet  # EnDNet | ResNet | ResNext | VGG | EfficientNet 
+  - model: EfficientNet  # EnDNet | ResNet | ResNext | VGG | EfficientNet 
   - wandb: defaults
 
 # dataset configuration
 dataset:
   name: TAUDB
   seed: 42
-  train_batch_size: 32 # high batch size will make memory error
-  test_batch_size: 64
+  train_batch_size: 24 # high batch size will make memory error
+  test_batch_size: 32
   train_dataset_path: ../dataset/real/train
   test_dataset_path: ../dataset/real/test
   subset_fraction: 1.0

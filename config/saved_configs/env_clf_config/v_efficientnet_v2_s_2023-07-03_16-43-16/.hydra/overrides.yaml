@@ -1,0 +1,2 @@
+- wandb.run.enable=true
+- training.num_epochs=20
