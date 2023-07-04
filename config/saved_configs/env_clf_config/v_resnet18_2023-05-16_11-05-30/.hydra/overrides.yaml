@@ -1,4 +1,0 @@
-- model=ResNet
-- model.version=resnet18
-- dataset.train_batch_size=24
-- optimizer.learning_rate=0.00005

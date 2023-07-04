@@ -4,3 +4,4 @@ __pycache__/
 dataset/*
 models/*
 bag_experiments/
+config/saved_configs/env_clf_config/
