@@ -1,6 +1,0 @@
-- dataset.train_batch_size=24
-- model.name=ResNet
-- model.version=resnet34
-- optimizer.learning_rate=1e-05
-- training.num_epochs=15
-- wandb.run.enable=True

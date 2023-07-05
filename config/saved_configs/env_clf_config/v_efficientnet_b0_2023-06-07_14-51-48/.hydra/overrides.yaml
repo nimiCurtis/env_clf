@@ -1,7 +1,0 @@
-- dataset.subset_fraction=0.75
-- dataset.train_batch_size=24
-- model.name=EfficientNet
-- model.version=efficientnet_b0
-- optimizer.learning_rate=5e-05
-- training.num_epochs=15
-- wandb.run.enable=True
