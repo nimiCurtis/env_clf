@@ -12,10 +12,10 @@ class Transformer():
     def train_transform(self):
         train_transform = A.Compose(
             [   
-                A.Crop(x_min=119,y_min=59,x_max=519,y_max=359),
+                A.Crop(x_min=109,y_min=39,x_max=529,y_max=359),
                 A.Resize(height=224,width=224),
                 # A.Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5)),
-                A.GaussNoise(mean=0.5,var_limit=[10,10],p=0.1),
+                A.GaussNoise(mean=0,var_limit=[0,10],p=0.1,per_channel=False),
                 A.RandomBrightnessContrast(p=0.2),
                 ToTensorV2(),
             ]
@@ -26,7 +26,7 @@ class Transformer():
     def eval_transform(self):
         val_transform = A.Compose(
             [   
-                A.Crop(x_min=119,y_min=59,x_max=519,y_max=359),
+                A.Crop(x_min=109,y_min=39,x_max=529,y_max=359),
                 A.Resize(height=224,width=224),
                 ToTensorV2()
             ]

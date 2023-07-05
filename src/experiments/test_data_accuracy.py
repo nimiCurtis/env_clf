@@ -5,7 +5,7 @@ import numpy as np
 import logging
 import matplotlib.pyplot as plt 
 import seaborn as sns
-
+from sklearn.metrics import confusion_matrix
 # Import necessary modules
 PATH = os.path.join(os.path.dirname(__file__), '../../../')
 sys.path.insert(0, PATH)
@@ -118,11 +118,11 @@ def test_list(bag_obj: BagReader, list_batch_path: str, cfg:DictConfig) -> None:
     
     # Create confusion matrix
     labels = np.unique(np.concatenate((info_dic["gt_labels"], info_dic["pred_labels"])))
-    cm = pd.crosstab(info_dic["gt_labels"], info_dic["pred_labels"], rownames=['Ground Truth'], colnames=['Predicted'], dropna=False)
-    
+    cm = confusion_matrix(info_dic["gt_labels"], info_dic["pred_labels"])
+
     # Plot confusion matrix
     fig = plt.figure(figsize=(10, 8))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False, square=True, xticklabels=labels, yticklabels=labels)
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False, xticklabels=labels,yticklabels=labels)
     plt.xlabel('Predicted Label')
     plt.ylabel('Ground Truth Label')
     plt.title('Confusion Matrix')

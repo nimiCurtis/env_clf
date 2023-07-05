@@ -4,7 +4,7 @@ hydra:
 
 defaults:
   - _self_
-  - experiments: road_cross  # all | road_cross 
+  - experiments: road_cross  # all | road_cross | stairs
 
 rt_exp: true
 save_dir: ../../config/saved_configs/experiments_config/${experiments.name}/${now:%Y-%m-%d}_${now:%H-%M-%S}/

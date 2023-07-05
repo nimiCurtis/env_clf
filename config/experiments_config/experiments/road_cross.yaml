@@ -2,5 +2,5 @@
 name: road_cross
 
 data: 
-- '/home/roblab20/catkin_ws/src/Exo_Intent/env_clf/bag/bag_batch_2023-06-21_15-58-30_ALL_test'
-- '/home/roblab20/catkin_ws/src/Exo_Intent/env_clf/bag/bag_batch_2023-06-21_16-28-26_ALL_test'
+- '/home/roblab20/catkin_ws/src/Exo_Intent/env_clf/bag_experiments/bag_batch_2023-06-21_15-58-30_ALL_test'
+- '/home/roblab20/catkin_ws/src/Exo_Intent/env_clf/bag_experiments/bag_batch_2023-06-21_16-28-26_ALL_test'

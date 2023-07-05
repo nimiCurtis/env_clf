@@ -1,0 +1,8 @@
+[2023-07-05 13:23:37,210][__main__][INFO] - [INFO] Accuracy of bag: /home/roblab20/catkin_ws/src/Exo_Intent/env_clf/bag_experiments/bag_batch_2023-07-05_10-27-36_ALL_test/2023-07-05-10-40-24.bag is:
+ 90.206% (175/194)
+[2023-07-05 13:23:37,228][__main__][INFO] - [INFO] Accuracy of bag: /home/roblab20/catkin_ws/src/Exo_Intent/env_clf/bag_experiments/bag_batch_2023-07-05_10-27-36_ALL_test/2023-07-05-10-51-16.bag is:
+ 98.0% (196/200)
+[2023-07-05 13:23:37,228][__main__][INFO] - Mean accuracy of batch: /home/roblab20/catkin_ws/src/Exo_Intent/env_clf/bag_experiments/bag_batch_2023-07-05_10-27-36_ALL_test is:
+ 94.103% (371/394)
+[2023-07-05 13:23:37,229][__main__][INFO] - Mean accuracy of total is: 94.103% (371/394)
+[2023-07-05 13:23:37,311][rospy.core][INFO] - signal_shutdown [atexit]
