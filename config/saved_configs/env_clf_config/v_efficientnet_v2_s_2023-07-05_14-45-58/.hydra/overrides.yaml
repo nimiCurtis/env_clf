@@ -1,4 +1,0 @@
-- wandb.run.enable=true
-- training.num_epochs=20
-- dataset.train_batch_size=20
-- training.description=with crop adjustment

@@ -3,7 +3,8 @@ import sys
 from tqdm import tqdm
 import warnings
 import numpy as np
-from torch import nn, optim, manual_seed, save, cuda
+import torch
+from torch import nn, optim, manual_seed, save, cuda, Tensor
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 
@@ -15,6 +16,7 @@ from model.pre_process import Transformer
 from model.utils.visualize import visualize_augmentations
 from model.utils.metrices import MetricMonitor
 from model.utils.early_stopping import EarlyStopper
+from model.utils.env_label import EnvLabel
 from model.eval import calculate_accuracy, evaluate
 from model import models
 
@@ -81,23 +83,8 @@ def main(cfg:DictConfig):
     # Set manual seed for reproducibility
     manual_seed(dataset_conf.seed)
     
-    # Load the specified model architecture
-    model = getattr(models, model_conf.name)(version=model_conf.version, num_classes=training_conf.num_classes, classifier_cfg=model_conf.classifier_layer )
-    
-    # Move the model to the specified device (CPU or GPU)
-    model = model.to(training_conf.device)
-
-    # Define the loss function based on the criterion name
-    criterion = getattr(nn, criterion_conf.name)().to(training_conf.device)
-    
-    # Get the optimizer object based on the optimizer name
-    optimizer = getattr(optim, optimizer_conf.name)(model.parameters(), lr=optimizer_conf.learning_rate)
-    
     # Define the data transformations using the custom Transformer class
     transformer = Transformer()
-    
-    # Define early-stopper criterion
-    early_stopper = EarlyStopper(patience=3,min_delta=0.1)
     
     # Load the training and testing datasets
     train_dataset = EnvDataset(root=PATH+dataset_conf.train_dataset_path,
@@ -111,7 +98,6 @@ def main(cfg:DictConfig):
     test_dataset = EnvDataset(root=PATH+dataset_conf.test_dataset_path,
                                 transform=transformer.eval_transform(),
                                 target_transform=transformer.one_hot_transform)
-    
     
     # Create data loaders to load the datasets in batches
     train_loader = DataLoader(train_dataset, batch_size=dataset_conf.train_batch_size, shuffle=True)
@@ -127,7 +113,24 @@ def main(cfg:DictConfig):
     # Initialize train/test total accuracies lists
     epoch_train_total_acc = []
     epoch_test_total_acc = []
+    
+        # Load the specified model architecture
+    model = getattr(models, model_conf.name)(version=model_conf.version, num_classes=training_conf.num_classes, classifier_cfg=model_conf.classifier_layer )
+    
+    # Move the model to the specified device (CPU or GPU)
+    model = model.to(training_conf.device)
 
+    # Set balance/imbalnce data
+    # Define the loss function based on the criterion name
+    class_weights = train_dataset.class_weights if criterion_conf.weight_loss else None
+    criterion = getattr(nn, criterion_conf.name)(weight = class_weights).to(training_conf.device)
+
+    # Get the optimizer object based on the optimizer name
+    optimizer = getattr(optim, optimizer_conf.name)(model.parameters(), lr=optimizer_conf.learning_rate)
+    
+    # Define early-stopper criterion
+    early_stopper = EarlyStopper(patience=3,min_delta=0.1)
+    
     # Train and evaluate the model for the specified number of epochs
     for epoch in range(1, training_conf.num_epochs + 1):
         epoch_train_loss, epoch_train_acc = train(train_loader, model, criterion, optimizer, epoch, training_conf) # train the model on the training set

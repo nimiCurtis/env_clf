@@ -8,6 +8,8 @@ import os
 import sys
 from omegaconf import OmegaConf
 import matplotlib.pyplot as plt
+from typing import Any, Callable, cast, Dict, List, Optional, Tuple, Union
+from collections import Counter
 
 import numpy as np
 import cv2
@@ -143,6 +145,21 @@ def split_all_to_train_test(bag_folder:str)->None:
         if filename.is_dir() and 'bag_batch' in filename.path:
                     split_to_train_test(filename.path)
 
+def find_classes(directory: str) -> Tuple[List[str], Dict[str, int]]:
+    """Finds the class folders in a dataset.
+
+    See :class:`DatasetFolder` for details.
+    """
+    classes = sorted(entry.name for entry in os.scandir(directory) if entry.is_dir())
+    if not classes:
+        raise FileNotFoundError(f"Couldn't find any class folder in {directory}.")
+
+    class_to_idx = {cls_name: EnvLabel[cls_name].value for cls_name in classes}
+    return classes, class_to_idx
+
+
+def get_class_weights(counter:Counter):
+    return [(1 - counter[id]/sum(counter.values())) for id in counter.keys() ]
 
 class EnvDataset(ImageFolder):
     
@@ -150,7 +167,8 @@ class EnvDataset(ImageFolder):
         super().__init__(root, transform=transform, target_transform=target_transform)
         self.num_classes = len(self.classes)
         self.fraction = fraction
-    
+        self.class_weights = self.get_class_weights(Counter(self.targets))
+        
     def __getitem__(self, index):
         path, target = self.samples[index]
         image = self.loader(path)
@@ -165,6 +183,9 @@ class EnvDataset(ImageFolder):
             target = torch.tensor(target)
 
         return image, target
+    
+    def find_classes(self, directory: str) -> Tuple[List[str], Dict[str, int]]:
+        return find_classes(directory)
 
     def get_subset_dataset(self):
         subset_indices = []
@@ -176,6 +197,9 @@ class EnvDataset(ImageFolder):
             subset_indices.extend(selected_indices)
 
         return Subset(self, subset_indices)
+    
+    def get_class_weights(self,counter):
+        return torch.Tensor(get_class_weights(counter))
 
 
 

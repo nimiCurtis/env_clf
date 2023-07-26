@@ -36,5 +36,5 @@ class Transformer():
 
     def one_hot_transform(self,target,num_classes):
         one_hot_target = torch.zeros(num_classes)
-        one_hot_target[target] = 1
+        one_hot_target[target-1] = 1
         return one_hot_target

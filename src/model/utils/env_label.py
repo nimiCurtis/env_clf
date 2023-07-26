@@ -7,5 +7,4 @@ class EnvLabel(Enum):
     SSA = 4
     SSD = 5
     W = 6
-    
-    
+    OBS = 7

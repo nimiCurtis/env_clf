@@ -23,6 +23,7 @@ from data.dataset import EnvDataset
 from model.pre_process import Transformer
 from model.utils.visualize import show_image
 from model.utils.metrices import MetricMonitor
+from model.utils.env_label import EnvLabel
 from model.eval import calculate_accuracy, evaluate
 from model import models
 
@@ -50,10 +51,10 @@ def main():
     parser.add_argument('--dataset', '-d', default=PATH+'../dataset/real/test',
                     help='dataset folder (default: test set folder)')
     
-    parser.add_argument('--model', '-m', default=PATH+'../models/ResNet/v_resnet34_2023-04-17_15-20-22.pt',
+    parser.add_argument('--model', '-m', default=PATH+'../models/EfficientNet/v_efficientnet_v2_s_2023-07-25_17-44-04.pt',
                     help='model architecture (default: resnet18)')
 
-    parser.add_argument('--image','-i',dest='image_number',default=0, type=int, help='Image number')
+    parser.add_argument('--image','-i',dest='image_number',default=700, type=int, help='Image number')
     parser.add_argument('--gpu',action='store_true', help='Use GPU if available (default: 0)')
 
 
@@ -83,6 +84,10 @@ def main():
     # Load the inference dataset
     inference_dataset = InferenceDataset(root=args.dataset,
                                 transform=transformer.train_transform())
+    for label in inference_dataset.classes:
+        inference_dataset.class_to_idx[label] =  EnvLabel[label].value
+    
+    
     # load the specific image
     img_tensor = inference_dataset[args.image_number]
 
