@@ -24,7 +24,7 @@ optimizer:
 
 criterion:
   name: CrossEntropyLoss # CrossEntropyLoss | BCEWithLogitsLoss
-  weight_loss: True # handling with imbalance data - True | False
+  weight_loss: False # handling with imbalance data - True | False
 
 early_stopper:
   patience: 3
@@ -35,11 +35,16 @@ training:
   device: cuda    # cpu | cuda
   num_epochs: 10
   num_classes: 7
+  balance_sampler: True # handling with imbalance data - True | False with corrolation to weight_loss
+                        # if True set weight_loss param to False
+                        # if true dataset wont be shuffle 
+                        
   debug: false
   save: true
   # save_path: ${model.name}_${model.version:if model.version is not None}_${now:%Y-%m-%d}_${now:%H-%M-%S}
   save_path: ${model.name}/v_${model.version}_${now:%Y-%m-%d}_${now:%H-%M-%S}
   description: null
+
 
 wandb: 
   run: 

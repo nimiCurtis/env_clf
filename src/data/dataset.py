@@ -158,8 +158,11 @@ def find_classes(directory: str) -> Tuple[List[str], Dict[str, int]]:
     return classes, class_to_idx
 
 
-def get_class_weights(counter:Counter):
-    return [(1 - counter[id]/sum(counter.values())) for id in counter.keys() ]
+def get_class_loss_weights(counter:Counter):
+    return [(1 - counter[id]/sum(counter.values())) for id in counter.keys()]
+
+def get_class_sampler_weights(counter:Counter, samples):
+    return [(1/counter[target]) for _, target in samples]
 
 class EnvDataset(ImageFolder):
     
@@ -167,7 +170,10 @@ class EnvDataset(ImageFolder):
         super().__init__(root, transform=transform, target_transform=target_transform)
         self.num_classes = len(self.classes)
         self.fraction = fraction
-        self.class_weights = self.get_class_weights(Counter(self.targets))
+        
+        counter = Counter(self.targets)
+        self.class_loss_weights = self.get_class_weights(counter=counter)
+        self.class_sampler_weights = self.get_class_sampler_weights(counter=counter,samples = self.samples)
         
     def __getitem__(self, index):
         path, target = self.samples[index]
@@ -199,8 +205,10 @@ class EnvDataset(ImageFolder):
         return Subset(self, subset_indices)
     
     def get_class_weights(self,counter):
-        return torch.Tensor(get_class_weights(counter))
+        return torch.Tensor(get_class_loss_weights(counter))
 
+    def get_class_sampler_weights(self,counter,samples):
+        return get_class_sampler_weights(counter,samples)
 
 
 def main():

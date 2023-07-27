@@ -6,7 +6,7 @@ import numpy as np
 import torch
 from torch import nn, optim, manual_seed, save, cuda, Tensor
 from torch.optim import Optimizer
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, WeightedRandomSampler
 
 # import from parallel modules
 PATH = os.path.join(os.path.dirname(__file__),'../')
@@ -99,8 +99,12 @@ def main(cfg:DictConfig):
                                 transform=transformer.eval_transform(),
                                 target_transform=transformer.one_hot_transform)
     
+    # set random sampler
+    sampler_weights = train_dataset.class_sampler_weights 
+    (sampler, shuffle) = (WeightedRandomSampler(weights=sampler_weights,num_samples=len(train_dataset)), False) if training_conf.balance_sampler else (None, True)
+    
     # Create data loaders to load the datasets in batches
-    train_loader = DataLoader(train_dataset, batch_size=dataset_conf.train_batch_size, shuffle=True)
+    train_loader = DataLoader(train_dataset, batch_size=dataset_conf.train_batch_size,sampler=sampler, shuffle=shuffle)
     test_loader = DataLoader(test_dataset, dataset_conf.test_batch_size, shuffle=False)
     
     # Initialize min loss
@@ -122,7 +126,7 @@ def main(cfg:DictConfig):
 
     # Set balance/imbalnce data
     # Define the loss function based on the criterion name
-    class_weights = train_dataset.class_weights if criterion_conf.weight_loss else None
+    class_weights = train_dataset.class_loss_weights if criterion_conf.weight_loss else None
     criterion = getattr(nn, criterion_conf.name)(weight = class_weights).to(training_conf.device)
 
     # Get the optimizer object based on the optimizer name
