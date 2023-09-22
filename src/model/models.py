@@ -35,9 +35,7 @@ class VGG(nn.Module):
         
         self.layer1 = nn.Linear(in_features=512*7*7,out_features=4000)
         self.layer2 = nn.Linear(in_features=1000,out_features=self.num_classes)
-        
-        
-        
+
     def forward(self, x):
         x = self.vgg(x)
         # x = x.view(-1,512*7*7)
@@ -70,7 +68,7 @@ class VGG(nn.Module):
         return vgg
 
 class ResNet(nn.Module):
-    def __init__(self, version='resnet18', weights=None, num_classes=6, classifier_cfg=None) -> None:
+    def __init__(self, version='resnet18', weights=None,dim1=False, num_classes=6, classifier_cfg=None) -> None:
         super(ResNet, self).__init__()
         self.version = version
         self.weights = weights
@@ -82,7 +80,10 @@ class ResNet(nn.Module):
         self.num_classes = num_classes
         self.resnet = self.get_resnet()
         self.backbone = torch.nn.Sequential(*(list(self.resnet.children())[:-1]))
-
+        
+        if dim1:
+            self.backbone[0] = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+        
         self.classifier_layer = nn.Sequential(
             nn.Linear(512 , linear1_out),
             nn.BatchNorm1d(linear1_out),
@@ -159,7 +160,7 @@ class ResNext(nn.Module):
 
 
 class EfficientNet(nn.Module):
-    def __init__(self, version='efficientnet_b0', weights = None, num_classes=6, classifier_cfg=None) -> None:
+    def __init__(self, version='efficientnet_b0', weights = None, dim1=False, num_classes=6, classifier_cfg=None) -> None:
         super(EfficientNet, self).__init__()
         self.version = version
         self.weights = weights
@@ -167,6 +168,8 @@ class EfficientNet(nn.Module):
         self.efficientnet = self.get_efficientnet()
         self.backbone = torch.nn.Sequential(*(list(self.efficientnet.children())[:-1]))
 
+        if dim1:
+            self.backbone[0][0][0] = nn.Conv2d(1, 24, kernel_size=(3, 3), stride=(2, 2),padding=(1,1), bias=False)
 
         if classifier_cfg is not None:
             linear1_out, linear2_out = classifier_cfg.linear1_out, classifier_cfg.linear2_out

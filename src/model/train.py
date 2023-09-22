@@ -13,7 +13,7 @@ PATH = os.path.join(os.path.dirname(__file__),'../')
 sys.path.insert(0, PATH)
 from data.dataset import EnvDataset
 from model.pre_process import Transformer
-from model.utils.visualize import visualize_augmentations
+from model.utils.visualize import visualize_augmentations, show_batch
 from model.utils.metrices import MetricMonitor
 from model.utils.early_stopping import EarlyStopper
 from model.utils.env_label import EnvLabel
@@ -42,6 +42,11 @@ def train(train_loader, model:nn.Module, criterion, optimizer:Optimizer, epoch, 
         cuda.empty_cache()
         output = model(images)
         # Calculate the loss between the model's output and the target labels
+        
+        if params.debug and i%10==0:
+                show_batch(images=images,labels=target,predictions=output,step=i,evaluating_loop=True)
+        
+        
         loss = criterion(output, target)
         # Calculate the accuracy of the model's predictions
         accuracy = calculate_accuracy(output, target)
@@ -88,6 +93,8 @@ def main(cfg:DictConfig):
     
     # Load the training and testing datasets
     train_dataset = EnvDataset(root=PATH+dataset_conf.train_dataset_path,
+                               dim1=model_conf.dim1,
+                               idx_exclude=dataset_conf.idx_exclude,
                                 fraction=dataset_conf.subset_fraction,
                                 transform=transformer.train_transform(),
                                 target_transform=transformer.one_hot_transform)
@@ -96,6 +103,8 @@ def main(cfg:DictConfig):
         train_dataset = train_dataset.get_subset_dataset()
 
     test_dataset = EnvDataset(root=PATH+dataset_conf.test_dataset_path,
+                                idx_exclude=dataset_conf.idx_exclude,
+                                dim1=model_conf.dim1,
                                 transform=transformer.eval_transform(),
                                 target_transform=transformer.one_hot_transform)
     
@@ -119,7 +128,10 @@ def main(cfg:DictConfig):
     epoch_test_total_acc = []
     
         # Load the specified model architecture
-    model = getattr(models, model_conf.name)(version=model_conf.version, num_classes=training_conf.num_classes, classifier_cfg=model_conf.classifier_layer )
+    model = getattr(models, model_conf.name)(version=model_conf.version,
+                                            dim1=model_conf.dim1,
+                                            num_classes=train_dataset.num_classes,
+                                            classifier_cfg=model_conf.classifier_layer )
     
     # Move the model to the specified device (CPU or GPU)
     model = model.to(training_conf.device)

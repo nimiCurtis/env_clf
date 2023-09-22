@@ -12,8 +12,6 @@ metric:
 parameters:
     wandb.run.enable: 
       values: [true]
-    dataset.subset_fraction:
-      values: [0.56,0.31,0.86]
     model.name:
       values: [EfficientNet]
     model.version:

@@ -41,9 +41,9 @@ def show_batch(images, labels, predictions,step=None,cols=8,evaluating_loop=Fals
 
 
     # Move images tensor from GPU to CPU and convert to numpy array
-    images = images.cpu().numpy()
-    labels = labels.cpu().numpy()
-    predictions = predictions.cpu().numpy()
+    images = images.detach().cpu().numpy()
+    labels = labels.detach().cpu().numpy()
+    predictions = predictions.detach().cpu().numpy()
     
     # Create grid of images
     images = np.transpose(images, (0, 2, 3, 1))
