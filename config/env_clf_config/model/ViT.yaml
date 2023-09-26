@@ -1,0 +1,6 @@
+name: ViT
+version: vit_base_patch16_224 # efficientnet_b0/4/5/6/7/v2_s/v2_m/v2_l
+classifier_layer: 
+  linear1_out: 512 
+  linear2_out: 256
+dim1: False  # False | True where is the input is 1dim channel or 3d

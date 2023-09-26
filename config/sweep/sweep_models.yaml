@@ -1,0 +1,33 @@
+## TODO: 
+# - add parameters/expirament
+
+project: env_clf
+entity: nimrodcurtis
+program: env_clf/src/model/train.py
+name: sweep_models  # give name
+method: grid
+metric:
+  goal: maximize
+  name: test_accuracy
+parameters:
+    wandb.run.enable: 
+      values: [true]
+    model:
+      values: [EfficientNet, ViT]
+    training.num_epochs:
+      values: [15,20]
+    training.save:
+      values: [true]
+    dataset.train_batch_size:
+      values: [24]
+    dataset.subset_fraction: 
+      values: [1.0,0.75,0.5]
+    optimizer.learning_rate: 
+      values: [0.00005] #  0.00001
+
+
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - ${args_no_hyphens}

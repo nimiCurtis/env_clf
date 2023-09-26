@@ -107,7 +107,7 @@ def main(cfg:DictConfig):
                                 dim1=model_conf.dim1,
                                 transform=transformer.eval_transform(),
                                 target_transform=transformer.one_hot_transform)
-    
+
     # set random sampler
     sampler_weights = train_dataset.class_sampler_weights 
     (sampler, shuffle) = (WeightedRandomSampler(weights=sampler_weights,num_samples=len(train_dataset)), False) if training_conf.balance_sampler else (None, True)

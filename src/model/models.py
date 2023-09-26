@@ -4,7 +4,8 @@ import torch.nn.functional as F
 from torchvision import models
 from collections import defaultdict
 torch.cuda.empty_cache()
-
+from timm.models import VisionTransformer
+import timm
 from torchvision.models import ResNet18_Weights
 
 # define the EnDNET model
@@ -21,6 +22,55 @@ class EnDNet(nn.Module):
         x = self.fc1(x)
         x = F.softmax(x,dim=1)
         return x
+
+
+
+class ViT(nn.Module):
+    def __init__(self, version='vit_base_patch16_224', weights=None,dim1=False, num_classes=6, classifier_cfg=None) -> None:
+        super(ViT, self).__init__()
+        self.version = version
+        self.weights = weights
+        pretrained = False if weights == None else weights
+        self.num_classes = num_classes
+        self.model = timm.create_model(version, pretrained=pretrained)
+        if classifier_cfg is not None:
+            linear1_out, linear2_out = classifier_cfg.linear1_out, classifier_cfg.linear2_out
+        else:
+            linear1_out, linear2_out = 256, 128
+        self.model.head =  nn.Sequential(
+            nn.Linear(self.model.head.in_features , linear1_out),
+            nn.BatchNorm1d(linear1_out),
+            nn.Dropout(0.2),
+            nn.Linear(linear1_out , linear2_out),
+            nn.Linear(linear2_out , num_classes)
+        )
+
+
+    def forward(self, x):
+        x = self.model(x)
+        x = F.softmax(x,dim=1)
+        return x
+    
+    # def get_vit(self):
+    #     if self.version == 'vgg11':
+    #         vgg = getattr(models, self.version)(weights=self.weights)
+    #     elif self.version == 'vgg11_bn':
+    #         vgg = getattr(models, self.version)(weights=self.weights)
+    #     elif self.version == 'vgg13':
+    #         vgg = getattr(models, self.version)(weights=self.weights)
+    #     elif self.version == 'vgg13_bn':
+    #         vgg = getattr(models, self.version)(weights=self.weights)
+    #     elif self.version == 'vgg16':
+    #         vgg = getattr(models, self.version)(weights=self.weights)
+    #     elif self.version == 'vgg16_bn':
+    #         vgg = getattr(models, self.version)(weights=self.weights)
+    #     elif self.version == 'vgg19':
+    #         vgg = getattr(models, self.version)(weights=self.weights)
+    #     elif self.version == 'vgg19_bn':
+    #         vgg = getattr(models, self.version)(weights=self.weights)
+    #     else:
+    #         raise ValueError('Invalid VGG version specified')
+    #     return vgg
 
 
 ## modoify VGG

@@ -4,7 +4,7 @@ hydra:
 
 defaults:
   - _self_
-  - model: EfficientNet  # EnDNet | ResNet | ResNext | VGG | EfficientNet 
+  - model: EfficientNet  # EnDNet | ResNet | ResNext | VGG | EfficientNet | ViT
   - wandb: defaults
 
 # dataset configuration
@@ -15,9 +15,9 @@ dataset:
   test_batch_size: 32
   train_dataset_path: ../dataset/real/train
   test_dataset_path: ../dataset/real/test
-  subset_fraction: 1.0
+  subset_fraction: 0.8
   idx_exclude: 
-  - 7
+  - 10
 
 # optimizer configuration
 optimizer:
@@ -36,7 +36,7 @@ early_stopper:
 training:
   device: cuda    # cpu | cuda
   num_epochs: 15
-  num_classes: 6
+  num_classes: 7
   balance_sampler: True # handling with imbalance data - True | False with corrolation to weight_loss
                         # if True set weight_loss param to False
                         # if true dataset wont be shuffle 
