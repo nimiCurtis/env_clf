@@ -24,7 +24,7 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 OmegaConf.register_new_resolver("path", lambda : PATH)
 import wandb 
-
+    
 def train(train_loader, model:nn.Module, criterion, optimizer:Optimizer, epoch, params):
 
     # Create a MetricMonitor object to keep track of the loss and accuracy
@@ -100,7 +100,8 @@ def main(cfg:DictConfig):
                                 target_transform=transformer.one_hot_transform)
     
     if dataset_conf.subset_fraction != 1.0:
-        train_dataset = train_dataset.get_subset_dataset()
+        train_dataset = train_dataset.get_subset_dataset().dataset
+
 
     test_dataset = EnvDataset(root=PATH+dataset_conf.test_dataset_path,
                                 idx_exclude=dataset_conf.idx_exclude,
@@ -108,12 +109,13 @@ def main(cfg:DictConfig):
                                 transform=transformer.eval_transform(),
                                 target_transform=transformer.one_hot_transform)
 
-    # set random sampler
-    sampler_weights = train_dataset.class_sampler_weights 
+
+    #set random sampler
+    sampler_weights = train_dataset.class_sampler_weights
     (sampler, shuffle) = (WeightedRandomSampler(weights=sampler_weights,num_samples=len(train_dataset)), False) if training_conf.balance_sampler else (None, True)
     
     # Create data loaders to load the datasets in batches
-    train_loader = DataLoader(train_dataset, batch_size=dataset_conf.train_batch_size,sampler=sampler, shuffle=shuffle)
+    train_loader = DataLoader(train_dataset , batch_size=dataset_conf.train_batch_size,sampler=sampler, shuffle=shuffle)
     test_loader = DataLoader(test_dataset, dataset_conf.test_batch_size, shuffle=False)
     
     # Initialize min loss

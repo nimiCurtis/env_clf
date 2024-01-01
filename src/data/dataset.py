@@ -312,7 +312,7 @@ class EnvDataset(ImageFolder):
             class_indices = [i for i, target in enumerate(self.targets) if target == class_idx]
             selected_indices = class_indices[:int(len(class_indices) * self.fraction)]
             subset_indices.extend(selected_indices)
-
+    
         return Subset(self, subset_indices)
 
     def get_class_weights(self, counter):

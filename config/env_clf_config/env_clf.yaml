@@ -37,7 +37,7 @@ training:
   device: cuda    # cpu | cuda
   num_epochs: 15
   num_classes: 7
-  balance_sampler: True # handling with imbalance data - True | False with corrolation to weight_loss
+  balance_sampler: true # handling with imbalance data - True | False with corrolation to weight_loss
                         # if True set weight_loss param to False
                         # if true dataset wont be shuffle 
                         
